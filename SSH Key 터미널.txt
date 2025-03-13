@@ -1,0 +1,14 @@
+ls ~/.ssh			: 현재 키 있는지 확인 있다면 키가 무엇이 있는지 알려줌.
+
+ssh-keygen -t rsa -b 4096 -C "your_new_email@example.com"
+: SSH 키를 생성.
+
+ssh-add -l		: 현재 SSH 에이전트에 등록된 키 확인
+
+eval "$(ssh-agent -s)"	: 에이전트 실행
+
+ssh-add ~/.ssh/id_rsa	: id_rsa 키 생성
+
+cat ~/.ssh/PureD		: PureD의 SSH 키 코드 확인
+
+ssh -T git@github.com	: github에 SSH 키가 정상적으로 등록되었는지 테스트

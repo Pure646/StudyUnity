@@ -405,7 +405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveVec: {x: 0, y: 0}
-  Speed: 1
+  Speed: 3
 --- !u!4 &528309081
 Transform:
   m_ObjectHideFlags: 0
@@ -899,6 +899,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1994762309}
+  - {fileID: 1498394882}
   - {fileID: 1746080402}
   - {fileID: 1535276522}
   - {fileID: 707891306}
@@ -906,4 +907,3 @@ SceneRoots:
   - {fileID: 1171502132}
   - {fileID: 282357464}
   - {fileID: 528309081}
-  - {fileID: 1498394882}

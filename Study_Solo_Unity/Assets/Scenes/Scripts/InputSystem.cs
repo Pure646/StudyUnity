@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,34 @@ public class InputSystem : MonoBehaviour
     public Vector2 MoveVec => moveVec;
     private Vector2 moveVec;
 
+    public static event Action OnJump;
+    public static event Action OnRun;
+    public static event Action OffRun;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);          // 씬 전환 시에도 객체를 유지
+        }
+    }
     private void Update()
     {
-        
+        Movemenet();
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            OnJump?.Invoke();
+        }
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            OnRun?.Invoke();
+        }
+        if(Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            OffRun?.Invoke();
+        }
     }
     
     private void Movemenet()

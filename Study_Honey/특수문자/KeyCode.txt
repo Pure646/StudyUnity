@@ -1,0 +1,4 @@
+]		: KeyCode.RightBracket
+[		: KeyCode.LeftBracket
+'		: KeyCode.Quote
+;		: KeyCode.Semicolon

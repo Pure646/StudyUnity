@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     private CharacterBase character;
-
+    private NextScene loadscene;
     private void Awake()
     {
         character = GetComponent<CharacterBase>();

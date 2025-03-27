@@ -1,0 +1,14 @@
+SceneManager.LoadScene("씬 이름");
+
+새로운 씬을 불러온다.
+
+//
+SceneManager.LoadScene("씬 이름", LoadSceneMode.Single);
+
+기존 씬을 완전히 제거하고 새로운 씬을 로드합니다.
+
+//
+SceneManager.LoadScene("씬 이름", LoadSceneMode.Additive);
+
+기존 씬을 유지하면서 새 씬을 추가로 로드
+(멀티 씬 사용)

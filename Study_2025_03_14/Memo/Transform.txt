@@ -1,5 +1,0 @@
-Position	: 위치
-
-Rotation	: 방향
-
-Scale 	: 크기 (한번에 크기 늘리는 것도 가능)

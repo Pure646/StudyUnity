@@ -1,3 +1,0 @@
-Buttton.onClick.AddListener(Funtion);
-
-버튼을 클릭하면 메서드(Funtion)이 호출되는 형식

@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Game_Mgr : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Button Exit_Btn;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        Exit_Btn.onClick.AddListener(GameExit);
+    }
+    private void GameExit()
+    {
+        SceneManager.LoadScene("LobbyScene");
     }
 }

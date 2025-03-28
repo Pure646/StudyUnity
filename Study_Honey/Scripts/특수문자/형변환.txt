@@ -1,0 +1,29 @@
+// 2, 수동 형변환
+float a_ff = 12.34f;
+int a_ii = (int)a_ff;   			// <-- 수동 형변환(강제 형변환)
+Debug.Log("a_ii : " + a_ii);
+
+float xxx = 123.456f;
+int MyInt = (int)xxx;
+float MyFloat = xxx - (int)xxx;     		// 123.456f - 123.0f
+Debug.Log(MyInt + " : " + MyFloat); 		// 123 : 0.4560013
+Debug.Log(xxx);				// 123.456
+Debug.Log((int)xxx);			// 123
+Debug.Log(MyFloat);			// 0.4560013
+
+오차범위 0.0000013 
+
+
+// 숫자형 --> 문자형
+ABC = 777;
+BBB = ABC.ToString();       // ToString : 강제로 String 형태로 변환된다.
+BBB = "" + ABC;
+BBB = 777.ToString();
+
+// 문자형 --> 숫자형
+string EEE = "123";
+int FFF = int.Parse(EEE);       // 좀 위험한 함수 : 특수 문자가 끼어 있으면 에러난다.
+(EEE 값이 특수문자를 넣으면 에러가 나온다.)
+int.TryParse(EEE, out FFF);	// EEE의 string을 int 형으로 바꾸고 FFF 값을 대입한다.
+(EEE 값이 특수문자를 넣어도 에러가 나오지 않고, 0이 된다.)
+float.TryParse(EEE,out FFF);	// EEE의 string을 float 형으로 바꾸고 FFF 값을 대입한다.

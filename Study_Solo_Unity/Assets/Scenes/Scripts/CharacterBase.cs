@@ -11,7 +11,7 @@ public class CharacterBase : MonoBehaviour
     public float characterSpeed;
 
     public float characterJumpPower;
-    private float current_Add_Verocity;
+    private float MoveVec_Add_Jump;
     private float air;
 
     private float saveX;           
@@ -50,22 +50,24 @@ public class CharacterBase : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         rigid.gravityScale = 1;
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            OnGround = true;
+        }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
         rigid.gravityScale = 3;
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            OnGround = false;
+        }
     }
     public void Jump()
     {
-        characterMoveVec.y += characterJumpPower;
-        current_Add_Verocity = characterMoveVec.y + characterJumpPower;
         if(OnGround)
         {
-            characterMoveVec.y = 0;
-        }
-        else
-        {
-            air = Mathf.Lerp(air, current_Add_Verocity, Time.deltaTime * 2);
+            rigid.velocity = new Vector2(rigid.velocity.x, characterJumpPower);
         }
     }
     public void Run()

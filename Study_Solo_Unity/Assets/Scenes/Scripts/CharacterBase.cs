@@ -6,8 +6,13 @@ public class CharacterBase : MonoBehaviour
 {
     private Rigidbody2D rigid;
     private Vector2 characterMoveVec;
+    private Animator animator;
+
     public float characterSpeed;
+
     public float characterJumpPower;
+    private float current_Add_Verocity;
+    private float air;
 
     private float saveX;           
     private float saveY;
@@ -17,8 +22,20 @@ public class CharacterBase : MonoBehaviour
 
     private void Start()
     {
-        rigid = GetComponent<Rigidbody2D>();
+        if(animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+        if(rigid == null)
+        {
+            rigid = GetComponent<Rigidbody2D>();
+        }
         rigid.gravityScale = 1;
+        characterJumpPower = 1f;
+    }
+    private void Update()
+    {
+        Character_Animator();
     }
     private void FixedUpdate()
     {
@@ -27,6 +44,8 @@ public class CharacterBase : MonoBehaviour
     private void LateUpdate()
     {
         SaveTransformPoint();
+        Character_Rotation();
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -39,6 +58,15 @@ public class CharacterBase : MonoBehaviour
     public void Jump()
     {
         characterMoveVec.y += characterJumpPower;
+        current_Add_Verocity = characterMoveVec.y + characterJumpPower;
+        if(OnGround)
+        {
+            characterMoveVec.y = 0;
+        }
+        else
+        {
+            air = Mathf.Lerp(air, current_Add_Verocity, Time.deltaTime * 2);
+        }
     }
     public void Run()
     {
@@ -58,9 +86,25 @@ public class CharacterBase : MonoBehaviour
         {
             characterSpeed = 0.5f;
         }
-        characterMoveVec = new Vector2(InputSystem.Instance.MoveVec.x * characterSpeed, characterMoveVec.y);
+        characterMoveVec = new Vector2(InputSystem.Instance.MoveVec.x * characterSpeed, characterMoveVec.y * Time.deltaTime);
 
         rigid.AddForce(characterMoveVec, ForceMode2D.Impulse);
+
+    }
+    private void Character_Rotation()
+    {
+        if(InputSystem.Instance.MoveVec.x < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 180f, 0);
+        }
+        else if(InputSystem.Instance.MoveVec.x > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+    private void Character_Animator()
+    {
+        animator.SetFloat("Magnitude", characterMoveVec.magnitude);
     }
     private void SaveTransformPoint()
     {

@@ -54,8 +54,7 @@ public class InputSystem : MonoBehaviour
     private void Movemenet()
     {
         float InputX = Input.GetAxis("Horizontal");
-        float InputY = Input.GetAxis("Vertical");
 
-        moveVec = new Vector2(InputX, InputY);
+        moveVec = Vector2.right * InputX;
     }
 }

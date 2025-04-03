@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterBase : MonoBehaviour
@@ -8,10 +9,11 @@ public class CharacterBase : MonoBehaviour
     private Vector2 characterMoveVec;
     private Animator animator;
 
-    public float characterSpeed;
+    private int More_Jump;
+    public int Add_Jump = 1;
 
     public float characterJumpPower;
-    private float MoveVec_Add_Jump;
+    public float characterSpeed;
     private float air;
 
     private float saveX;           
@@ -19,7 +21,7 @@ public class CharacterBase : MonoBehaviour
     private bool OnSave;
     private bool OnGround;
     private bool OnRun;
-
+    
     private void Start()
     {
         if(animator == null)
@@ -31,7 +33,8 @@ public class CharacterBase : MonoBehaviour
             rigid = GetComponent<Rigidbody2D>();
         }
         rigid.gravityScale = 1;
-        characterJumpPower = 1f;
+        characterJumpPower = 10f;
+        More_Jump = Add_Jump;
     }
     private void Update()
     {
@@ -47,17 +50,27 @@ public class CharacterBase : MonoBehaviour
         Character_Rotation();
 
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other != null && other.gameObject.CompareTag("Coin"))
+        {
+            // UI 에서 coin의 돈이 올라간다.
+            // coin의 Object가 사라진다.
+            // Object 사라지는 Effect를 구현시킨다.
+
+            Destroy(other.gameObject);
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        rigid.gravityScale = 1;
         if (collision.gameObject.CompareTag("Ground"))
         {
             OnGround = true;
+            More_Jump = Add_Jump;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        rigid.gravityScale = 3;
         if(collision.gameObject.CompareTag("Ground"))
         {
             OnGround = false;
@@ -65,8 +78,9 @@ public class CharacterBase : MonoBehaviour
     }
     public void Jump()
     {
-        if(OnGround)
+        if(More_Jump > 0)
         {
+            More_Jump--;
             rigid.velocity = new Vector2(rigid.velocity.x, characterJumpPower);
         }
     }

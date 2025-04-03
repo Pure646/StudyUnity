@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ¿¬»êÀÚ
-// 1, ¼ö½Ä¿¬»êÀÚ : + , - , * , / , %
-// 2, Áõ°¨¿¬»êÀÚ : ++ , --
-// 3, ÇÒ´ç¿¬»êÀÚ : = , -= , += , *= , /= , %=
-// 4, ³í¸®¿¬»êÀÚ : && , || , !
-// 5, °ü°è¿¬»êÀÚ : < , > , == , <= , >= , !=
-// 6, ºñÆ®¿¬»êÀÚ : & , | , ^
+// ì—°ì‚°ì
+// 1, ìˆ˜ì‹ì—°ì‚°ì : + , - , * , / , %
+// 2, ì¦ê°ì—°ì‚°ì : ++ , --
+// 3, í• ë‹¹ì—°ì‚°ì : = , -= , += , *= , /= , %=
+// 4, ë…¼ë¦¬ì—°ì‚°ì : && , || , !
+// 5, ê´€ê³„ì—°ì‚°ì : < , > , == , <= , >= , !=
+// 6, ë¹„íŠ¸ì—°ì‚°ì : & , | , ^
 public class Test_03 : MonoBehaviour
 {
     private void Start()
     {
-        // 1, ¼ö½Ä¿¬»êÀÚ : + , - , * , / , %
+        // 1, ìˆ˜ì‹ì—°ì‚°ì : + , - , * , / , %
         int a = 88, b = 22;
         int c = a + b;
         Debug.Log(a + " + " + b + " = " + c);
@@ -31,29 +31,29 @@ public class Test_03 : MonoBehaviour
         str = $"{a} / {b} = {a / b}";
         Debug.Log(str);
 
-        // % ³ª¸ÓÁö ¿¬»êÀÚ
+        // % ë‚˜ë¨¸ì§€ ì—°ì‚°ì
         Debug.Log($"{a} % {b} = {a % b}");
-        // ³ª´« ¼ıÀÚº¸´Ù ÇÏ³ª ÀÛÀº °ª±îÁö ¹İº¹µÇ´Â Æ¯Â¡ÀÌ ÀÖ´Ù.
+        // ë‚˜ëˆˆ ìˆ«ìë³´ë‹¤ í•˜ë‚˜ ì‘ì€ ê°’ê¹Œì§€ ë°˜ë³µë˜ëŠ” íŠ¹ì§•ì´ ìˆë‹¤.
 
-        // 2, Áõ°¨¿¬»êÀÚ : ++ , --
+        // 2, ì¦ê°ì—°ì‚°ì : ++ , --
         // C, C++ , C#
         int cc = 0;
-        cc++;           // cc = cc + 1;     1Áõ°¡ ½ÃÅ°¶ó´Â ¶æ
-        ++cc;           // ´Üµ¶ ¸í·É¾î·Î ¾²ÀÏ ¶§´Â ±×³É 1Áõ°¡ ½ÃÅ°¶ó´Â ¶æ
-        Debug.Log("´Üµ¶ »ç¿ëÀÏ °æ¿ì : " + cc);
+        cc++;           // cc = cc + 1;     1ì¦ê°€ ì‹œí‚¤ë¼ëŠ” ëœ»
+        ++cc;           // ë‹¨ë… ëª…ë ¹ì–´ë¡œ ì“°ì¼ ë•ŒëŠ” ê·¸ëƒ¥ 1ì¦ê°€ ì‹œí‚¤ë¼ëŠ” ëœ»
+        Debug.Log("ë‹¨ë… ì‚¬ìš©ì¼ ê²½ìš° : " + cc);
 
         cc = 0;
-        Debug.Log(string.Format("º¹ÇÕ ¸í·É¾î·Î »ç¿ëµÉ °æ¿ì µÚ¿¡ ºÙÀÏ ¶§ : {0}", cc++));
+        Debug.Log(string.Format("ë³µí•© ëª…ë ¹ì–´ë¡œ ì‚¬ìš©ë  ê²½ìš° ë’¤ì— ë¶™ì¼ ë•Œ : {0}", cc++));
 
         cc = 0;
-        Debug.Log(string.Format("º¹ÇÕ ¸í·É¾î·Î »ç¿ëµÉ °æ¿ì ¾Õ¿¡ ºÙÀÏ ¶§ : {0}", ++cc));
+        Debug.Log(string.Format("ë³µí•© ëª…ë ¹ì–´ë¡œ ì‚¬ìš©ë  ê²½ìš° ì•ì— ë¶™ì¼ ë•Œ : {0}", ++cc));
 
         int ff = 10;
-        ff--;           // ff = ff - 1;     //´Üµ¶À¸·Î ¾²ÀÏ ¶§´Â 1°¨¼Ò ½ÃÅ°¶ó´Â ÀÇ¹Ì
+        ff--;           // ff = ff - 1;     //ë‹¨ë…ìœ¼ë¡œ ì“°ì¼ ë•ŒëŠ” 1ê°ì†Œ ì‹œí‚¤ë¼ëŠ” ì˜ë¯¸
         --ff;
         Debug.Log(ff);
 
-        // 3, ÇÒ´ç¿¬»êÀÚ =, -=, +=, *=, /=, %=
+        // 3, í• ë‹¹ì—°ì‚°ì =, -=, +=, *=, /=, %=
         int a_xx = 10;
         a_xx += 5;
         //a_xx = a_xx + 1;      a_xx++;     a_xx += 1;
@@ -63,29 +63,29 @@ public class Test_03 : MonoBehaviour
         a_yy /= 2;          //a_yy = a_yy / 2;
         a_yy %= 2;          //a_yy = a_yy % 2;
 
-        // 4, ³í¸®¿¬»êÀÚ && , ||, !
+        // 4, ë…¼ë¦¬ì—°ì‚°ì && , ||, !
         int ggg = 50;
         int hhh = 60;
-        bool a_check = ggg > 40 && hhh > 50; // && : And ~ÀÌ°í , ±×¸®°í
+        bool a_check = ggg > 40 && hhh > 50; // && : And ~ì´ê³  , ê·¸ë¦¬ê³ 
         Debug.Log("ggg > 40 && hhh > 50 : " + a_check);
         // true  && true  = true
         // true  && false = false
         // false && true  = false
         // false && false = false
 
-        a_check = ggg > 40 || hhh > 70;     // || : Or, ~ÀÌ°Å³ª, ¶Ç´Â
+        a_check = ggg > 40 || hhh > 70;     // || : Or, ~ì´ê±°ë‚˜, ë˜ëŠ”
         Debug.Log("ggg > 40 || hhh > 70 : " + a_check);
         // true  || true  = true
         // true  || false = true
         // false || true  = true
         // false || false = false
 
-        a_check = !(ggg > hhh);             // Not °á°ú¸¦ ¹İÀü½ÃÅ°´Â ¿¬»êÀÚ
+        a_check = !(ggg > hhh);             // Not ê²°ê³¼ë¥¼ ë°˜ì „ì‹œí‚¤ëŠ” ì—°ì‚°ì
         Debug.Log(a_check);
         // !true  = false
         // !false = true
 
-        // 5, °ü°è¿¬»êÀÚ : <, >, >=, <=, ==, !=
+        // 5, ê´€ê³„ì—°ì‚°ì : <, >, >=, <=, ==, !=
         int AAA = 50;
         int BBB = 60;
         Debug.Log("AAA < BBB : " + (AAA < BBB));    // True
@@ -95,7 +95,7 @@ public class Test_03 : MonoBehaviour
         Debug.Log("AAA <= BBB : " + (AAA <= BBB));  // True
         Debug.Log("AAA >= BBB : " + (AAA >= BBB));  // False
 
-        // 6, ºñÆ®¿¬»êÀÚ : &, |, ^
+        // 6, ë¹„íŠ¸ì—°ì‚°ì : &, |, ^
         int nnn = 5;            // 0101
         int mmm = 10;           // 1010
 
@@ -105,14 +105,14 @@ public class Test_03 : MonoBehaviour
         Result = nnn | mmm;     // 1111
         Debug.Log("nnn | mmm : " + Result);      // 15
 
-        // ^ : XOR : ¿¬»êÀÚ : µÎ°ªÀÌ °°À¸¸é 0, µÎ °ªÀÌ ´Ù¸£¸é 1
+        // ^ : XOR : ì—°ì‚°ì : ë‘ê°’ì´ ê°™ìœ¼ë©´ 0, ë‘ ê°’ì´ ë‹¤ë¥´ë©´ 1
         Result = nnn ^ mmm;     // 1111
         Debug.Log("nnn ^ mmm : " + Result);      // 15
 
         int kkk = 2357;
-        int a_ScVal = kkk ^ 6789;       // ¾ÏÈ£È­
+        int a_ScVal = kkk ^ 6789;       // ì•”í˜¸í™”
         Debug.Log("a_ScVal : " + a_ScVal);      // 5040
-        int a_MyVal = a_ScVal ^ 6789;   // º¹È£È­
+        int a_MyVal = a_ScVal ^ 6789;   // ë³µí˜¸í™”
         Debug.Log("a_MyVal : " + a_MyVal);      // 2357
     }
 }

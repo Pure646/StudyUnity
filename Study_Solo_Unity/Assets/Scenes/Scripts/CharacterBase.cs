@@ -54,11 +54,8 @@ public class CharacterBase : MonoBehaviour
     {
         if (other != null && other.gameObject.CompareTag("Coin"))
         {
-            // UI 에서 coin의 돈이 올라간다.
-            // coin의 Object가 사라진다.
-            // Object 사라지는 Effect를 구현시킨다.
-
             Destroy(other.gameObject);
+            Default_Result.Instance.coin_Number++;
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

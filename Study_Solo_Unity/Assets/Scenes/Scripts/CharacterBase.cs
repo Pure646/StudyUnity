@@ -14,7 +14,9 @@ public class CharacterBase : MonoBehaviour
 
     public float characterJumpPower;
     public float characterSpeed;
-    private float air;
+
+    [SerializeField] private bool OnAir;
+    [SerializeField] private bool OnJump;
 
     private float saveX;           
     private float saveY;
@@ -35,10 +37,12 @@ public class CharacterBase : MonoBehaviour
         rigid.gravityScale = 1;
         characterJumpPower = 10f;
         More_Jump = Add_Jump;
+        Layer_Ground = LayerMask.GetMask("Ground");
     }
     private void Update()
     {
         Character_Animator();
+        Rayer();
     }
     private void FixedUpdate()
     {
@@ -63,7 +67,7 @@ public class CharacterBase : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             OnGround = true;
-            More_Jump = Add_Jump;
+            More_Jump = Add_Jump;           //언젠가 위치 변경
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -73,9 +77,23 @@ public class CharacterBase : MonoBehaviour
             OnGround = false;
         }
     }
+    private float Ray_distance = 0.6f;     // rayer 지속시간
+    private int Layer_Ground;
+    private void Rayer()
+    {
+        if (Physics2D.Raycast((Vector2)transform.position , Vector2.down, Ray_distance, Layer_Ground))
+        {
+            OnAir = false;
+        }
+        else
+        {
+            OnAir = true;
+        }
+        Debug.DrawRay((Vector2)transform.position, Vector2.down * 0.6f, Color.red, 1f);
+    }
     public void Jump()
     {
-        if(More_Jump > 0)
+        if (More_Jump > 0)
         {
             More_Jump--;
             rigid.velocity = new Vector2(rigid.velocity.x, characterJumpPower);
@@ -118,6 +136,7 @@ public class CharacterBase : MonoBehaviour
     private void Character_Animator()
     {
         animator.SetFloat("Magnitude", characterMoveVec.magnitude);
+        animator.SetBool("OnAir", OnAir);
     }
     private void SaveTransformPoint()
     {

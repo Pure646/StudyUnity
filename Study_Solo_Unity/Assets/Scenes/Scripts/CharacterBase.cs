@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -15,14 +16,12 @@ public class CharacterBase : MonoBehaviour
     public float characterJumpPower;
     public float characterSpeed;
 
-    [SerializeField] private bool OnAir;
-    [SerializeField] private bool OnJump;
-
+    private bool OnJump;
     private float saveX;           
     private float saveY;
     private bool OnSave;
-    private bool OnGround;
     private bool OnRun;
+    private bool OnGround;
     
     private void Start()
     {
@@ -35,14 +34,13 @@ public class CharacterBase : MonoBehaviour
             rigid = GetComponent<Rigidbody2D>();
         }
         rigid.gravityScale = 1;
-        characterJumpPower = 10f;
+        characterJumpPower = 5f;
         More_Jump = Add_Jump;
-        Layer_Ground = LayerMask.GetMask("Ground");
     }
     private void Update()
     {
         Character_Animator();
-        Rayer();
+        layer_lay();
     }
     private void FixedUpdate()
     {
@@ -62,43 +60,47 @@ public class CharacterBase : MonoBehaviour
             Default_Result.Instance.coin_Number++;
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    public float raycast_lange = 0.8f;
+    public LayerMask ground_Mask;
+    private void layer_lay()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if(Physics2D.Raycast((Vector2)transform.position, Vector2.down, raycast_lange, ground_Mask))
         {
             OnGround = true;
-            More_Jump = Add_Jump;           //언젠가 위치 변경
-        }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if(collision.gameObject.CompareTag("Ground"))
-        {
-            OnGround = false;
-        }
-    }
-    private float Ray_distance = 0.6f;     // rayer 지속시간
-    private int Layer_Ground;
-    private void Rayer()
-    {
-        if (Physics2D.Raycast((Vector2)transform.position , Vector2.down, Ray_distance, Layer_Ground))
-        {
-            OnAir = false;
+            More_Jump = Add_Jump;
         }
         else
         {
-            OnAir = true;
+            StartCoroutine(WaitingJump_Ground());
         }
-        Debug.DrawRay((Vector2)transform.position, Vector2.down * 0.6f, Color.red, 1f);
+        Debug.DrawLine((Vector2)transform.position, new Vector2(transform.position.x, transform.position.y - raycast_lange), Color.red);
     }
+    
     public void Jump()
     {
         if (More_Jump > 0)
         {
+            OnJump = true;
             More_Jump--;
             rigid.velocity = new Vector2(rigid.velocity.x, characterJumpPower);
         }
     }
+    private IEnumerator WaitingJump_Ground()
+    {
+        if (OnJump && OnGround == true)
+        {
+            yield return new WaitForSeconds(0.15f);
+            OnJump = false;
+        }
+        else if (OnJump && OnGround == false)
+        {
+            yield return new WaitForSeconds(0.15f);
+            OnJump = false;
+        }
+        OnGround = false;
+    }
+
+
     public void Run()
     {
         OnRun = true;
@@ -136,7 +138,8 @@ public class CharacterBase : MonoBehaviour
     private void Character_Animator()
     {
         animator.SetFloat("Magnitude", characterMoveVec.magnitude);
-        animator.SetBool("OnAir", OnAir);
+        animator.SetBool("OnGround", OnGround);
+        animator.SetBool("OnJump", OnJump);
     }
     private void SaveTransformPoint()
     {
@@ -162,4 +165,6 @@ public class CharacterBase : MonoBehaviour
             }
         }
     }
+
+    
 }

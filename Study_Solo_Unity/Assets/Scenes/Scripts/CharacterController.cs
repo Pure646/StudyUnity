@@ -12,20 +12,21 @@ public class CharacterController : MonoBehaviour
     }
     private void OnEnable()
     {
-        InputSystem.OnJump += Jumpping;
+        InputSystem.Jump += Jumping;
         InputSystem.OnRun += Running;
         InputSystem.OffRun += Walking;
     }
     private void OnDisable()
     {
-        InputSystem.OnJump -= Jumpping;
+        InputSystem.Jump -= Jumping;
         InputSystem.OnRun -= Running;
         InputSystem.OffRun -= Walking;
     }
-    private void Jumpping()
+    private void Jumping()
     {
         character.Jump();
     }
+
     private void Running()
     {
         character.Run();

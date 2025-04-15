@@ -10,7 +10,7 @@ public class InputSystem : MonoBehaviour
     public Vector2 MoveVec => moveVec;
     private Vector2 moveVec;
 
-    public static event Action OnJump;
+    public static event Action Jump;
     public static event Action OnRun;
     public static event Action OffRun;
     public static event Action Switch_Scene;
@@ -31,7 +31,7 @@ public class InputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            OnJump?.Invoke();
+            Jump?.Invoke();
         }
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {

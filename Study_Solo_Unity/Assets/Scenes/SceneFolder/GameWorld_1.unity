@@ -1578,10 +1578,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2509b8b1cb6a464aaacbb3ca3f8d51c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Add_Jump: 1
+  Add_Jump: 5
   characterJumpPower: 0
   characterSpeed: 0
-  OnAir: 0
+  raycast_lange: 0.6
+  ground_Mask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!95 &1480381285
 Animator:
   serializedVersion: 5

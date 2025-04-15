@@ -1,0 +1,3 @@
+myButton.onClick.Invoke();
+
+ "이 버튼이 실제로 클릭됐을 때 호출될 함수들"을 강제로 실행

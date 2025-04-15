@@ -1,0 +1,9 @@
+Invoke("Boom", 2f); 			// 2초 뒤에 Boom 함수 실행
+
+void Boom()
+{
+    Debug.Log("펑!");
+}
+
+
+지연 호출. 정해진 시간 후에 함수를 실행시켜 줘.

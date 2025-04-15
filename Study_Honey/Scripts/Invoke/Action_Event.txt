@@ -1,0 +1,8 @@
+Action myAction = () => Debug.Log("Hello!");
+
+myAction.Invoke();  			// "Hello!" 출력
+
+myAction?.Invoke();  		// myAction이 null이 아니면 실행
+
+
+등록된 메서드 호출

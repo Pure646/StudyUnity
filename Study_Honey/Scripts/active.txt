@@ -1,0 +1,4 @@
+속성		의미
+
+activeSelf		이 오브젝트 자신이 활성화 상태인지 (true / false)
+activeInHierarchy	부모까지 다 포함해서, 계층 전체에서 활성화 상태인지

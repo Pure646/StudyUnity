@@ -18,6 +18,20 @@ public class Game_mgr_3 : MonoBehaviour
     private int m_WinCount = 0;
     private int m_LostCount = 0;
 
+    [Header("--- Direction Image ---")]
+    public Image UserGBB_Img;
+    public Image ComGBB_Img;
+
+    public Sprite GawiSprite;
+    public Sprite BawiSprite;
+    public Sprite BoSprite;
+
+    public Text ShowResult_Text;
+
+    private float m_WaitTimer = 0.0f;
+
+    private int time = 1;
+    private float m_Time = 0.0f;
     private void Start()
     {
         if(Gawi_Btn != null)
@@ -34,13 +48,58 @@ public class Game_mgr_3 : MonoBehaviour
         }
         if(Replay_Btn != null)
         {
-            Replay_Btn.onClick.AddListener(ReplayBtnClick);
+            Replay_Btn.onClick.AddListener(
+                () =>       // 내용이 많지 않으면 람다식을 이용한다.        // 람다식 : 무명함수
+            {
+                m_Money = 10000;
+                m_LostCount = 0;
+                m_WinCount = 0;
+            }
+            );
         }
+    }
+    private void Update()
+    {
+        if(m_Money <= 0)
+        {
+            m_Money = 0;
+            Result_Text.text = "Game Over";
+        }
+
+        if(UserInfo_Text != null)
+        {
+            UserInfo_Text.text = "유저의 보유금액 : " + m_Money +
+                " : 승 (" + m_WinCount + ")" +
+                " : 패 (" + m_LostCount + ")";
+        }
+        if (Time.time >= m_Time && m_Money > 0)
+        {
+            m_Time += 0.01f;
+            BoBtnClick();
+        }
+        
+        if(0.0f < m_WaitTimer)
+        {
+            m_WaitTimer -= Time.deltaTime;
+            if(m_WaitTimer <= 0.0f)
+            {
+                UserGBB_Img.gameObject.SetActive(false);
+                ComGBB_Img.gameObject.SetActive(false);
+                ShowResult_Text.gameObject.SetActive(false);
+
+                Result_Text.color = Color.yellow;
+                Result_Text.text = "선택해 주세요.";
+            }
+        }
+        
     }
 
     private void ReplayBtnClick()
     {
         Debug.Log("리플레이 버튼");
+        m_Money = 10000;
+        m_LostCount = 0;
+        m_WinCount = 0;
     }
 
     private void BoBtnClick()
@@ -61,17 +120,57 @@ public class Game_mgr_3 : MonoBehaviour
         if (a_UserSel == a_ComSel)
         {
             a_strResult += " = 비겼습니다.";
+
+            ShowResult_Text.color = new Color32(255, 255, 0, 255);
+            ShowResult_Text.text = "무승부";
         }
         else if ((a_UserSel == 3 && a_ComSel == 2))
         {
             a_strResult += " = 이겼습니다.";
+            m_WinCount++;
+            m_Money += 100;
+
+            ShowResult_Text.color = new Color32(0, 0, 0, 255);
+            ShowResult_Text.text = "승리!!";
         }
         else
         {
             a_strResult += " = 졌습니다.";
+            m_LostCount++;
+            m_Money -= 150;
+
+            ShowResult_Text.color = new Color32(255, 0, 0, 255);
+            ShowResult_Text.text = "패배!!";
         }
 
         Result_Text.text = a_strResult;
+
+        UserGBB_Img.sprite = BoSprite;
+        if(UserGBB_Img.gameObject.activeSelf == false)
+        {
+            UserGBB_Img.gameObject.SetActive(true);
+        }
+        if (ComGBB_Img.gameObject.activeSelf == false)
+        {
+            ComGBB_Img.gameObject.SetActive(true);
+        }
+        if(ShowResult_Text.gameObject.activeSelf == false)
+        {
+            ShowResult_Text.gameObject.SetActive(true);
+        }
+        if (a_ComSel == 1)
+        {
+            ComGBB_Img.sprite = GawiSprite;
+        }
+        else if(a_ComSel == 2)
+        {
+            ComGBB_Img.sprite = BawiSprite;
+        }
+        else if(a_ComSel == 3)
+        {
+            ComGBB_Img.sprite = BoSprite;
+        }
+        m_WaitTimer = 3.0f;
     }
 
     private void BawiBtnClick()
@@ -92,17 +191,57 @@ public class Game_mgr_3 : MonoBehaviour
         if (a_UserSel == a_ComSel)
         {
             a_strResult += " = 비겼습니다.";
+
+            ShowResult_Text.color = new Color32(255, 255, 0, 255);
+            ShowResult_Text.text = "무승부";
         }
         else if ((a_UserSel == 2 && a_ComSel == 1))
         {
             a_strResult += " = 이겼습니다.";
+            m_WinCount++;
+            m_Money += 100;
+
+            ShowResult_Text.color = new Color32(0, 0, 0, 255);
+            ShowResult_Text.text = "승리!!";
         }
         else
         {
             a_strResult += " = 졌습니다.";
+            m_LostCount++;
+            m_Money -= 150;
+
+            ShowResult_Text.color = new Color32(255, 0, 0, 255);
+            ShowResult_Text.text = "패배!!";
         }
 
         Result_Text.text = a_strResult;
+
+        UserGBB_Img.sprite = BawiSprite;
+        if (UserGBB_Img.gameObject.activeSelf == false)
+        {
+            UserGBB_Img.gameObject.SetActive(true);
+        }
+        if(ComGBB_Img.gameObject.activeSelf == false)
+        {
+            ComGBB_Img.gameObject.SetActive(true);
+        }
+        if (ShowResult_Text.gameObject.activeSelf == false)
+        {
+            ShowResult_Text.gameObject.SetActive(true);
+        }
+        if (a_ComSel == 1)
+        {
+            ComGBB_Img.sprite = GawiSprite;
+        }
+        else if (a_ComSel == 2)
+        {
+            ComGBB_Img.sprite = BawiSprite;
+        }
+        else if (a_ComSel == 3)
+        {
+            ComGBB_Img.sprite = BoSprite;
+        }
+        m_WaitTimer = 3.0f;
     }
     private void GawiBtnClick()
     {
@@ -122,16 +261,56 @@ public class Game_mgr_3 : MonoBehaviour
         if(a_UserSel == a_ComSel)
         {
             a_strResult += " = 비겼습니다.";
+
+            ShowResult_Text.color = new Color32(255, 255, 0, 255);
+            ShowResult_Text.text = "무승부";
         }
         else if ((a_UserSel == 1 && a_ComSel == 3))
         {
             a_strResult += " = 이겼습니다.";
+            m_WinCount++;
+            m_Money += 100;
+
+            ShowResult_Text.color = new Color32(0, 0, 0, 255);
+            ShowResult_Text.text = "승리!!";
         }
         else
         {
             a_strResult += " = 졌습니다.";
+            m_LostCount++;
+            m_Money -= 150;
+
+            ShowResult_Text.color = new Color32(255, 0, 0, 255);
+            ShowResult_Text.text = "패배!!";
         }
 
         Result_Text.text = a_strResult;
+
+        UserGBB_Img.sprite = GawiSprite;
+        if (UserGBB_Img.gameObject.activeSelf == false)
+        {
+            UserGBB_Img.gameObject.SetActive(true);
+        }
+        if (ComGBB_Img.gameObject.activeSelf == false)
+        {
+            ComGBB_Img.gameObject.SetActive(true);
+        }
+        if (ShowResult_Text.gameObject.activeSelf == false)
+        {
+            ShowResult_Text.gameObject.SetActive(true);
+        }
+        if (a_ComSel == 1)
+        {
+            ComGBB_Img.sprite = GawiSprite;
+        }
+        else if (a_ComSel == 2)
+        {
+            ComGBB_Img.sprite = BawiSprite;
+        }
+        else if (a_ComSel == 3)
+        {
+            ComGBB_Img.sprite = BoSprite;
+        }
+        m_WaitTimer = 3.0f;
     }
 }

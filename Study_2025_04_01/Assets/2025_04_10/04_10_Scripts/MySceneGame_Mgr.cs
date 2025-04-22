@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Game_Mgr : MonoBehaviour
+public class MySceneGame_Mgr : MonoBehaviour
 {
     public Button Even_Btn;
     public Button Odd_Btn;

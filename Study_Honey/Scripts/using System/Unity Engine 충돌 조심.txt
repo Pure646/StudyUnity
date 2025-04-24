@@ -1,0 +1,5 @@
+System.Random은 일반 C#용 클래스 (예: new Random() 쓰는 방식)
+
+UnityEngine.Random은 Unity 전용 랜덤 함수 (예: Random.Range())
+
+using System;을 쓰면 C# 컴파일러가 Random이라는 이름을 볼 때 어느 걸 써야 할지 모호해져서 에러가 날 수 있어.

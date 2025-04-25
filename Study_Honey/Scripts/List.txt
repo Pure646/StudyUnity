@@ -1,0 +1,42 @@
+private List<T> ListList = new List<T>();
+
+📗 Add() = 리스트 추가
+
+ListList.Add();
+
+
+📗 list.Insert(2, 10);
+
+2번 인덱스 위치에 10이 추가
+정확하게 2번 인덱스 위치에  새로운 공간을 만들고 추가하고 기존에 2번 index는 밀려서 3번으로 가진다.
+
+
+📗 Remove( 변수 ) = list에 변수 라는 것을 찾아 지운다.
+
+첫번째 인덱스 부터 찾아본다.
+
+📕 RemoveAt(index) = list index번 자리를 지운다.
+
+books.RemoveAt(3);
+네 번째 칸에 있는 책을 꺼내는 느낌이야 (0부터 시작이니까 주의!)
+
+
+📙 Clear() = list 에 있는 모든것을 지운다.
+
+books.Clear();
+책장을 통째로 정리해서 아무것도 안 남게 만드는 거야.
+
+
+
+
+// 슬롯 추가
+slots.Add(newSlot);
+
+// 슬롯 삭제
+Destroy(slots[2]);
+slots.RemoveAt(2); // 리스트에서 제거까지 깔끔하게!
+
+// 쉽게 GameObject를 지울수 있음.
+// GameObject 값의 초기값을 넣지 않아도 괜찮음.
+// GameObject 값의 크기 지정하고 값 직접 넣어야한다는 불편함이 있지만 , List는 자동으로 추가/삭제 가능.
+// GameObject 인덱스 관리 귀찮지만. Add()만 해주면 가능.

@@ -1,0 +1,12 @@
+자료구조 안에서 특정 위치를 가리키는 숫자
+
+public enum EnemyType
+{
+    Goblin,		// 0
+    Orc,			// 1
+    Skeleton,		// 2
+    Dragon		// 3
+}
+
+// 0 ,1 ,2 ,3  값이  index 라고 한다.
+

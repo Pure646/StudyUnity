@@ -73,37 +73,58 @@ public class Text_042502 : MonoBehaviour
         //for문을 돌면서 최대값과 최소값을 구하고 최대값의 인덱스와 최소값의
         //인덱스를 같이 출력해 주세요.
         //출력 예시 : "최대값 : ?? (인덱스 ??), 최소값 : ?? (인덱스 ??)
-        int Bigger = 0;
-        int Smaller = 0;
-        int[] Number = new int[2];
-        int[] index = new int[2];
-        for (int i = 0; i < a_kk.Length; i++) 
+        //int Bigger = 0;
+        //int Smaller = 0;
+        //int[] Number = new int[2];
+        //int[] index = new int[2];
+        //for (int i = 0; i < a_kk.Length; i++) 
+        //{
+        //    for (int k = 0; k < a_kk.Length; k++) 
+        //    {
+        //        if (a_kk[i] >= a_kk[k])
+        //        {
+        //            Bigger++;
+        //        }
+        //        if (a_kk[i] <= a_kk[k])
+        //        {
+        //            Smaller++;
+        //        }
+        //    }
+        //    if(Bigger == a_kk.Length)
+        //    {
+        //        Number[0] = a_kk[i];
+        //        index[0] = i;
+        //    }
+        //    if(Smaller == a_kk.Length)
+        //    {
+        //        Number[1] = a_kk[i];
+        //        index[1] = i;
+        //    }
+        //    Bigger = 0;
+        //    Smaller = 0;
+        //}
+        //Debug.Log($"최대값 : {Number[0]} (인덱스 : {index[0]}), 최소값 : {Number[1]} (인덱스 : {index[1]})");
+
+        int a_Max = a_kk[0];    // int.MinValue;
+        int a_Min = a_kk[0];    // int.MaxValue;
+
+        int a_SvMaxIdx = 0;
+        int a_SvMinIdx = 0;
+
+        for(int i = 0; i < a_kk.Length; i++)
         {
-            for (int k = 0; k < a_kk.Length; k++) 
+            if(a_Max < a_kk[i])
             {
-                if (a_kk[i] >= a_kk[k])
-                {
-                    Bigger++;
-                }
-                if (a_kk[i] <= a_kk[k])
-                {
-                    Smaller++;
-                }
+                a_Max = a_kk[i];
+                a_SvMaxIdx = i;
             }
-            if(Bigger == a_kk.Length)
+            if (a_kk[i] < a_Min)
             {
-                Number[0] = a_kk[i];
-                index[0] = i;
+                a_Min = a_kk[i];
+                a_SvMinIdx = i;
             }
-            if(Smaller == a_kk.Length)
-            {
-                Number[1] = a_kk[i];
-                index[1] = i;
-            }
-            Bigger = 0;
-            Smaller = 0;
         }
-        Debug.Log($"최대값 : {Number[0]} (인덱스 : {index[0]}), 최소값 : {Number[1]} (인덱스 : {index[1]})");
+        Debug.Log($"최대값 : {a_Max} (인덱스 {a_SvMaxIdx}), 최소값 : {a_Min} (인덱스 {a_SvMinIdx})");
     }
 
     // Update is called once per frame

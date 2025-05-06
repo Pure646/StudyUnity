@@ -4,6 +4,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum GBB
+{
+    Gawi = 1,       // 가위
+    Bawi = 2,       // 바위
+    Bo = 3,         // 보
+}
+public enum Record
+{
+    Draw = 0,       // 비겼다
+    Win = 1,        // 이겼다
+    Lost = 2,       // 졌다
+}
 public class Game_mgr_3 : MonoBehaviour
 {
     public Button Gawi_Btn;
@@ -36,15 +48,24 @@ public class Game_mgr_3 : MonoBehaviour
     {
         if(Gawi_Btn != null)
         {
-            Gawi_Btn.onClick.AddListener(GawiBtnClick);
+            Gawi_Btn.onClick.AddListener(() =>
+            {
+                BtnClickMethod(GBB.Gawi);
+            });
         }
         if(Bawi_Btn != null)
         {
-            Bawi_Btn.onClick.AddListener(BawiBtnClick);
+            Bawi_Btn.onClick.AddListener(() =>
+            {
+                BtnClickMethod(GBB.Bawi);
+            });
         }
         if(Bo_Btn!= null)
         {
-            Bo_Btn.onClick.AddListener(BoBtnClick);
+            Bo_Btn.onClick.AddListener(()=>
+            {
+                BtnClickMethod(GBB.Bo);
+            });
         }
         if(Replay_Btn != null)
         {
@@ -72,26 +93,6 @@ public class Game_mgr_3 : MonoBehaviour
                 " : 승 (" + m_WinCount + ")" +
                 " : 패 (" + m_LostCount + ")";
         }
-        if (Time.time >= m_Time && m_Money > 0)
-        {
-            m_Time += 0.01f;
-            BoBtnClick();
-        }
-        
-        if(0.0f < m_WaitTimer)
-        {
-            m_WaitTimer -= Time.deltaTime;
-            if(m_WaitTimer <= 0.0f)
-            {
-                UserGBB_Img.gameObject.SetActive(false);
-                ComGBB_Img.gameObject.SetActive(false);
-                ShowResult_Text.gameObject.SetActive(false);
-
-                Result_Text.color = Color.yellow;
-                Result_Text.text = "선택해 주세요.";
-            }
-        }
-        
     }
 
     private void ReplayBtnClick()
@@ -102,215 +103,114 @@ public class Game_mgr_3 : MonoBehaviour
         m_WinCount = 0;
     }
 
-    private void BoBtnClick()
+    private void BtnClickMethod(GBB a_UserSel)
     {
-        Debug.Log("보 버튼");
+        if (m_Money <= 0)
+            return;
 
-        int a_UserSel = 3;
-        int a_ComSel = Random.Range(1, 4);
-
-        string a_strUser = "보";
-        string a_strCom = "가위";
-        if (a_ComSel == 2)
-            a_strCom = "바위";
-        else if (a_ComSel == 3)
-            a_strCom = "보";
-
-        string a_strResult = "User (" + a_strUser + ") : Com (" + a_strCom + ")";
-        if (a_UserSel == a_ComSel)
-        {
-            a_strResult += " = 비겼습니다.";
-
-            ShowResult_Text.color = new Color32(255, 255, 0, 255);
-            ShowResult_Text.text = "무승부";
-        }
-        else if ((a_UserSel == 3 && a_ComSel == 2))
-        {
-            a_strResult += " = 이겼습니다.";
-            m_WinCount++;
-            m_Money += 100;
-
-            ShowResult_Text.color = new Color32(0, 0, 0, 255);
-            ShowResult_Text.text = "승리!!";
-        }
-        else
-        {
-            a_strResult += " = 졌습니다.";
-            m_LostCount++;
-            m_Money -= 150;
-
-            ShowResult_Text.color = new Color32(255, 0, 0, 255);
-            ShowResult_Text.text = "패배!!";
-        }
-
-        Result_Text.text = a_strResult;
-
-        UserGBB_Img.sprite = BoSprite;
-        if(UserGBB_Img.gameObject.activeSelf == false)
-        {
-            UserGBB_Img.gameObject.SetActive(true);
-        }
-        if (ComGBB_Img.gameObject.activeSelf == false)
-        {
-            ComGBB_Img.gameObject.SetActive(true);
-        }
-        if(ShowResult_Text.gameObject.activeSelf == false)
-        {
-            ShowResult_Text.gameObject.SetActive(true);
-        }
-        if (a_ComSel == 1)
-        {
-            ComGBB_Img.sprite = GawiSprite;
-        }
-        else if(a_ComSel == 2)
-        {
-            ComGBB_Img.sprite = BawiSprite;
-        }
-        else if(a_ComSel == 3)
-        {
-            ComGBB_Img.sprite = BoSprite;
-        }
-        m_WaitTimer = 3.0f;
-    }
-
-    private void BawiBtnClick()
-    {
-        Debug.Log("바위 버튼");
-
-        int a_UserSel = 2;
-        int a_ComSel = Random.Range(1, 4);
-
-        string a_strUser = "바위";
-        string a_strCom = "가위";
-        if (a_ComSel == 2)
-            a_strCom = "바위";
-        else if (a_ComSel == 3)
-            a_strCom = "보";
-
-        string a_strResult = "User (" + a_strUser + ") : Com (" + a_strCom + ")";
-        if (a_UserSel == a_ComSel)
-        {
-            a_strResult += " = 비겼습니다.";
-
-            ShowResult_Text.color = new Color32(255, 255, 0, 255);
-            ShowResult_Text.text = "무승부";
-        }
-        else if ((a_UserSel == 2 && a_ComSel == 1))
-        {
-            a_strResult += " = 이겼습니다.";
-            m_WinCount++;
-            m_Money += 100;
-
-            ShowResult_Text.color = new Color32(0, 0, 0, 255);
-            ShowResult_Text.text = "승리!!";
-        }
-        else
-        {
-            a_strResult += " = 졌습니다.";
-            m_LostCount++;
-            m_Money -= 150;
-
-            ShowResult_Text.color = new Color32(255, 0, 0, 255);
-            ShowResult_Text.text = "패배!!";
-        }
-
-        Result_Text.text = a_strResult;
-
-        UserGBB_Img.sprite = BawiSprite;
-        if (UserGBB_Img.gameObject.activeSelf == false)
-        {
-            UserGBB_Img.gameObject.SetActive(true);
-        }
-        if(ComGBB_Img.gameObject.activeSelf == false)
-        {
-            ComGBB_Img.gameObject.SetActive(true);
-        }
-        if (ShowResult_Text.gameObject.activeSelf == false)
-        {
-            ShowResult_Text.gameObject.SetActive(true);
-        }
-        if (a_ComSel == 1)
-        {
-            ComGBB_Img.sprite = GawiSprite;
-        }
-        else if (a_ComSel == 2)
-        {
-            ComGBB_Img.sprite = BawiSprite;
-        }
-        else if (a_ComSel == 3)
-        {
-            ComGBB_Img.sprite = BoSprite;
-        }
-        m_WaitTimer = 3.0f;
-    }
-    private void GawiBtnClick()
-    {
-        Debug.Log("가위 버튼");
-
-        int a_UserSel = 1;
-        int a_ComSel = Random.Range(1, 4);
-
+        GBB a_ComSel = (GBB)Random.Range((int)GBB.Gawi, (int)GBB.Bo + 1);
         string a_strUser = "가위";
+        if (a_UserSel == GBB.Bawi)
+            a_strUser = "바위";
+        else if (a_UserSel == GBB.Bo)
+            a_strUser = "보";
+
         string a_strCom = "가위";
-        if (a_ComSel == 2)
+        if (a_ComSel == GBB.Bawi)
             a_strCom = "바위";
-        else if (a_ComSel == 3)
+        else if (a_ComSel == GBB.Bo)
             a_strCom = "보";
 
-        string a_strResult = "User (" + a_strUser + ") : Com (" + a_strCom + ")";
-        if(a_UserSel == a_ComSel)
-        {
-            a_strResult += " = 비겼습니다.";
+        Result_Text.text = "User(" + a_strUser + ") : Com(" + a_strCom + ")";
 
-            ShowResult_Text.color = new Color32(255, 255, 0, 255);
-            ShowResult_Text.text = "무승부";
+        //--- 판정
+        Record a_IsWin = Record.Draw;
+        if (a_UserSel == a_ComSel)
+        {
+            Result_Text.text += " 비겼습니다.";
+            a_IsWin = Record.Draw;
         }
-        else if ((a_UserSel == 1 && a_ComSel == 3))
+        else if
+            ((a_UserSel == GBB.Gawi && a_ComSel == GBB.Bo) ||
+            (a_UserSel == GBB.Bawi && a_ComSel == GBB.Gawi) ||
+            (a_UserSel == GBB.Bo && a_ComSel == GBB.Bawi))
         {
-            a_strResult += " = 이겼습니다.";
-            m_WinCount++;
-            m_Money += 100;
-
-            ShowResult_Text.color = new Color32(0, 0, 0, 255);
-            ShowResult_Text.text = "승리!!";
+            Result_Text.text += " 이겼습니다.";
+            a_IsWin = Record.Win;
         }
         else
         {
-            a_strResult += " = 졌습니다.";
-            m_LostCount++;
-            m_Money -= 150;
-
-            ShowResult_Text.color = new Color32(255, 0, 0, 255);
-            ShowResult_Text.text = "패배!!";
+            Result_Text.text += " 졌습니다.";
+            a_IsWin = Record.Lost;
         }
+        if(a_IsWin >= 0)
+        {
+            if(a_IsWin == Record.Win)
+            {
+                ShowResult_Text.text = "승리!!";
+                ShowResult_Text.color = Color.cyan;
+            }
+            else if (a_IsWin == Record.Lost)
+            {
+                ShowResult_Text.text = "패배!!";
+                ShowResult_Text.color = Color.red;
+            }
+            else
+            {
+                ShowResult_Text.text = "무승부";
+                ShowResult_Text.color = Color.white;
+            }
 
-        Result_Text.text = a_strResult;
-
-        UserGBB_Img.sprite = GawiSprite;
-        if (UserGBB_Img.gameObject.activeSelf == false)
-        {
-            UserGBB_Img.gameObject.SetActive(true);
-        }
-        if (ComGBB_Img.gameObject.activeSelf == false)
-        {
-            ComGBB_Img.gameObject.SetActive(true);
-        }
-        if (ShowResult_Text.gameObject.activeSelf == false)
-        {
             ShowResult_Text.gameObject.SetActive(true);
         }
-        if (a_ComSel == 1)
+        if (a_ComSel > 0)
         {
-            ComGBB_Img.sprite = GawiSprite;
+            ComGBB_Img.gameObject.SetActive(true);
+
+            if (a_ComSel == GBB.Gawi)
+            {
+                ComGBB_Img.sprite = GawiSprite;
+            }
+            else if (a_ComSel == GBB.Bawi)
+            {
+                ComGBB_Img.sprite = BawiSprite;
+            }
+            else if (a_ComSel == GBB.Bo)
+            {
+                ComGBB_Img.sprite = BoSprite;
+            }
         }
-        else if (a_ComSel == 2)
+        if (a_UserSel > 0)
         {
-            ComGBB_Img.sprite = BawiSprite;
+            if (a_UserSel == GBB.Gawi)
+            {
+                UserGBB_Img.sprite = GawiSprite;
+            }
+            else if (a_UserSel == GBB.Bawi)
+            {
+                UserGBB_Img.sprite = BawiSprite;
+            }
+            else if (a_UserSel == GBB.Bo)
+            {
+                UserGBB_Img.sprite = BoSprite;
+            }
+            UserGBB_Img.gameObject.SetActive(true);
         }
-        else if (a_ComSel == 3)
+
+        if (a_IsWin == Record.Win)
         {
-            ComGBB_Img.sprite = BoSprite;
+            m_WinCount++;
+            m_Money += 100;
         }
-        m_WaitTimer = 3.0f;
+        else if (a_IsWin == Record.Lost)
+        {
+            m_LostCount++;
+            m_Money -= 200;
+            if (m_Money <= 0)
+            {
+                m_Money = 0;
+                Result_Text.text = "Game Over";
+            }
+        }
     }
 }

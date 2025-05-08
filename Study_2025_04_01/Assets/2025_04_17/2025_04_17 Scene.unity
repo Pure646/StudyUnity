@@ -2289,9 +2289,10 @@ MonoBehaviour:
   Result_Text: {fileID: 1811543990}
   UserGBB_Img: {fileID: 1795500473}
   ComGBB_Img: {fileID: 1841216646}
-  GawiSprite: {fileID: 21300000, guid: 104e0675879867b42a3aa7582630f4df, type: 3}
-  BawiSprite: {fileID: 21300000, guid: 39cdce79536c649478431f4680fbdf01, type: 3}
-  BoSprite: {fileID: 21300000, guid: c6eecfbf6665d0b4c963c734e6a02fd5, type: 3}
+  GBB_Sprite:
+  - {fileID: 21300000, guid: 104e0675879867b42a3aa7582630f4df, type: 3}
+  - {fileID: 21300000, guid: 39cdce79536c649478431f4680fbdf01, type: 3}
+  - {fileID: 21300000, guid: c6eecfbf6665d0b4c963c734e6a02fd5, type: 3}
   ShowResult_Text: {fileID: 1715073346}
 --- !u!4 &2097714467
 Transform:

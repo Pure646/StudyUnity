@@ -19,13 +19,13 @@ using UnityEngine;
 // 생성자 오버로드 함수만 만들고 기본 생성자를 만들지 않으면 디폴트 생성자가 자동으로 만들어 지지 않는다.
 
 // 디폴트 생성자 : 아무것도 없는 생성자.
-public class Monster
+public class MonsterHotel
 {
     public string m_Name = "";          // 이름       //<-- 초기화 순서 1번
     public int m_Hp = 0;                // 체력
     public float m_Attack = 0;          // 공격력
 
-    public Monster()    //<-- 생성자 메서드           //<-- 초기화 순서 2번
+    public MonsterHotel()    //<-- 생성자 메서드           //<-- 초기화 순서 2번
     {
         Debug.Log("생성자 메서드 호출");
 
@@ -34,7 +34,7 @@ public class Monster
         m_Attack = 1.0f;
     }
 
-    ~Monster()          //<-- 소멸자 메서드           //시간이 지나면 자동으로 메모리가 정리가 되면서 삭제되고 소멸자 메서드가 나온다.
+    ~MonsterHotel()          //<-- 소멸자 메서드           //시간이 지나면 자동으로 메모리가 정리가 되면서 삭제되고 소멸자 메서드가 나온다.
     {
         Debug.Log("소멸자 메서드 호출");
     }
@@ -47,11 +47,11 @@ public class Monster
     // ****가비지 컬렉션에 의해 메모리에서 객체가 삭제될 때 호출 때마다 소멸자 메서드가 실행이 된다****
 
     // 함수의 오버로드 : 매개변수의 형식이 다르면 같은 함수명을 사용할 수 있다.
-    public Monster(string name)     // 생성자 오버로드 함수
+    public MonsterHotel(string name)     // 생성자 오버로드 함수
     {
         m_Name = name;
     }
-    public Monster(string name, int a_hp, float a_Att)
+    public MonsterHotel(string name, int a_hp, float a_Att)
     {
         m_Name = name;
         m_Hp = a_hp;
@@ -67,7 +67,7 @@ public class Test_051501 : MonoBehaviour
 {
     private void Start()
     {
-        Monster AAA = new Monster();    // 변수 선언후 초기화
+        MonsterHotel AAA = new MonsterHotel();    // 변수 선언후 초기화
         AAA.PrintInfo();
         AAA.m_Name = "울프";                      //<-- 초기화 순서 3번
         AAA.m_Hp = 100;
@@ -81,10 +81,10 @@ public class Test_051501 : MonoBehaviour
         int CCC = 222;      // 변수 선언과 동시에 초기화
         Debug.Log(CCC);
 
-        Monster a_MM = new Monster("사자", 78, 15.0f);
+        MonsterHotel a_MM = new MonsterHotel("사자", 78, 15.0f);
         a_MM.PrintInfo();
 
-        Monster a_SS = new Monster("오크");
+        MonsterHotel a_SS = new MonsterHotel("오크");
         a_SS.PrintInfo();
     }
     private void Update()

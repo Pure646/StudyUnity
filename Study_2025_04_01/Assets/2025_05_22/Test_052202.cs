@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Drop
@@ -33,6 +34,16 @@ namespace Drop
 public class Test_052202 : MonoBehaviour
 {
     List<Drop.Item> m_ItList = new List<Drop.Item>();
+
+    int PriceASC(Drop.Item a, Drop.Item b)      //정렬 조건 함수
+    {
+        return a.m_Price.CompareTo(b.m_Price);      // 오름차순 정렬 (가격이 낮은 순에서 높은 순으로 정렬
+    }
+
+    int LevelDESC(Drop.Item a, Drop.Item b)     //정렬 조건 함수
+    {
+        return b.m_Level.CompareTo(a.m_Level);      // 내림차순 정렬 (레벨이 높은순에서 낮은순으로 정렬)
+    }
 
     private void Start()
     {
@@ -92,13 +103,77 @@ public class Test_052202 : MonoBehaviour
         //    a_It.PrintInfo();
         //}
 
-        //--- 중간값 추가
-        m_ItList.Insert(1, new Drop.Item("상어의 이빨", 4, 1.2f, 1200));
-        Debug.Log("--- 1번 인덱스에 중간값 추가 결과 ---");
-        foreach(Drop.Item a_It in m_ItList)
+        ////--- 중간값 추가
+        //m_ItList.Insert(1, new Drop.Item("상어의 이빨", 4, 1.2f, 1200));
+        //Debug.Log("--- 1번 인덱스에 중간값 추가 결과 ---");
+        //foreach(Drop.Item a_It in m_ItList)
+        //{
+        //    a_It.PrintInfo();
+        //}
+        ////--- 중간값 추가
+
+        ////--- 정렬
+        //--- 가격이 낮은 순에서 높은 순으로 정렬
+        //Debug.Log("---");
+        //m_ItList.Sort(PriceASC);
+
+        //foreach(Drop.Item a_It in m_ItList)
+        //{
+        //    a_It.PrintInfo();
+        //}
+
+        //List<Drop.Item> a_CopyList = m_ItList.ToList();     //using System.Linq;
+        //a_CopyList.Sort(PriceASC);
+        //Debug.Log("--- 가격이 낮은 순에서 높은 순으로 정렬");
+        //foreach(Drop.Item a_It in a_CopyList)
+        //{
+        //    a_It.PrintInfo();
+        //}
+
+        ////--- 레벨이 높은순에서 낮은순으로 정렬
+        //List<Drop.Item> a_CloneList = m_ItList.ToList();
+        //a_CloneList.Sort(LevelDESC);
+        //Debug.Log("--- 레벨이 높은순에서 낮은순으로 정렬 ---");
+        //foreach (Drop.Item a_It in a_CloneList)
+        //{
+        //    a_It.PrintInfo();
+        //}
+
+        //Debug.Log("--- 추가된 순으로 보기 ---");
+        //foreach(Drop.Item a_It in m_ItList)
+        //{
+        //    a_It.PrintInfo();
+        //}
+        ////--- 정렬
+
+        ////--- 검색
+        //Debug.Log("--- List 검색 ---");
+        //Drop.Item a_FindNode = null;
+        //for(int i = 0; i < m_ItList.Count; i++)
+        //{
+        //    if (m_ItList[i].m_Name == "상어의 이빨")
+        //    {
+        //        a_FindNode = m_ItList[i];
+        //        break;
+        //    }
+        //}
+
+        //if(a_FindNode !=null)
+        //{
+        //    a_FindNode.PrintInfo();
+        //}
+
+        Drop.Item a_FNode = m_ItList.Find((a_FN) => a_FN.m_Name == "팔라독의 검");
+        if(a_FNode != null)
         {
-            a_It.PrintInfo();
+            a_FNode.PrintInfo();
         }
-        //--- 중간값 추가
+        //--- 검색
+
+        //--- 전체 노드 삭제
+        m_ItList.Clear();
+        Debug.Log("--- 전체 노드 삭제 결과 ---");
+        Debug.Log(m_ItList.Count);
+        //--- 전체 노드 삭제
     }
 }

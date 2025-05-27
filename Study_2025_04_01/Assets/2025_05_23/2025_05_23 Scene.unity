@@ -123,6 +123,59 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &113155282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 113155284}
+  - component: {fileID: 113155283}
+  m_Layer: 0
+  m_Name: GameMgr
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &113155283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113155282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db127940baf3e554eb2baafb15b82753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NumCount: 0
+  NumberTexts:
+  - {fileID: 2003929850}
+  - {fileID: 643100225}
+  - {fileID: 368026319}
+  - {fileID: 1465064939}
+  - {fileID: 1580912439}
+  - {fileID: 1796890208}
+  Replay_Btn: {fileID: 566478897}
+--- !u!4 &113155284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113155282}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &186281901
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,26 +362,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 315731437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b98389cdf287a34ca2d16862825b5a5, type: 3}
+  m_Script: {fileID: 11500000, guid: 13db1b493570686498a3bf14bf6d273b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GaugeBar: {fileID: 1037858241}
-  GaugeTx: {fileID: 670462962}
-  tx:
-  - {fileID: 2003929850}
-  - {fileID: 643100225}
-  - {fileID: 368026319}
-  - {fileID: 1465064939}
-  - {fileID: 1580912439}
-  - {fileID: 1796890208}
-  Img:
-  - {fileID: 651314183}
-  - {fileID: 534817285}
-  - {fileID: 1772559033}
-  - {fileID: 497321261}
-  - {fileID: 1854031563}
-  - {fileID: 1107363737}
-  Rs_btn: {fileID: 566478897}
+  m_PwBarImg: {fileID: 1037858241}
+  PwText: {fileID: 670462962}
 --- !u!1 &368026317
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,7 +791,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2137,3 +2175,4 @@ SceneRoots:
   - {fileID: 871387472}
   - {fileID: 2014908965}
   - {fileID: 1725914904}
+  - {fileID: 113155284}

@@ -1,0 +1,7 @@
+Raycast Target = true 
+Raycast Target = false
+
+이 속성을 활성화하면 마우스 클릭이나 터치와 같은 입력 이벤트가 그 UI 요소에 영향을 미친다는 뜻
+
+Raycast Target을 활성화하면 해당 UI 요소는 마우스 클릭이나 터치 입력을 받을 수 있습니다.
+Raycast Target을 비활성화하면 해당 UI 요소는 입력을 받지 않으며, 사용자가 다른 UI 요소와 상호작용할 수 있게 됩니다.

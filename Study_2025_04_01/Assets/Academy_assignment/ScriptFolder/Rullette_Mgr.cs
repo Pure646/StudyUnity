@@ -36,7 +36,11 @@ public class Rullette_Mgr : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reset_Btn();
+        }
+        if (Input.GetMouseButtonDown(0))
         {
             Number_rising = 0;
         }

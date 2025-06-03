@@ -49,7 +49,7 @@ public class CarText : MonoBehaviour
         }
         else if(carSystem.CarSpeed == 0f && check[0])
         {
-            if(PlayerNumber <= Player_Text.Count)   // 오버 방지
+            if(PlayerNumber < Player_Text.Count)   // 오버 방지
             {
                 if (Result >= 0f)
                 {

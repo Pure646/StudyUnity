@@ -5,6 +5,7 @@ using UnityEngine;
 public class ArrowController : MonoBehaviour
 {
     private GameObject player;
+    public float m_DownSpeed;
     private void Start()
     {
         this.player = GameObject.Find("player");
@@ -12,7 +13,7 @@ public class ArrowController : MonoBehaviour
     private void Update()
     {
         // 프레임마다 등속으로 낙하시킨다.
-        transform.Translate(0, -0.1f, 0);
+        transform.Translate(0, m_DownSpeed, 0);
 
         // 회면 밖으로 나오면 오브젝트를 소멸시킨다.
         if (transform.position.y < -5.0f)

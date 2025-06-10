@@ -33,7 +33,7 @@ public class FishTrans : MonoBehaviour
             Renderer fisherer = gameObject.GetComponent<Renderer>();
             if(fisherer.material.color == Color.red)
             {
-                AddGold = 1000;
+                AddGold = 10000;
             }
             else
             {

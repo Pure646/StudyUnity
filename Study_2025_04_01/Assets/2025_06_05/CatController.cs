@@ -7,6 +7,9 @@ public class CatController : MonoBehaviour
     float m_MvX = 0.0f;         // 이동 계산용 변수
     float m_MvSpeed = 7.0f;     // 이동 속도
 
+    [HideInInspector] public bool m_IsRBtnDown = false;  // 이 변수가 true 일 때는 RBtn을 누르고 있다는 의미로 판단
+    [HideInInspector] public bool m_IsLBtnDown = false;
+
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -27,7 +30,7 @@ public class CatController : MonoBehaviour
         //    transform.Translate(2, 0, 0); // 오른쪽으로 이동
         //}
 
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) || m_IsLBtnDown == true)
         {
             // transform.Translate(-3 , 0  ,0);         // 왼쪽으로 '3' 움직인다.
             // 속도 = 거리 / 시간 ---> 속도 * 시간 = 거리
@@ -35,7 +38,7 @@ public class CatController : MonoBehaviour
             transform.Translate(m_MvX, 0.0f, 0.0f);
         }
 
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) || m_IsRBtnDown == true)
         {
             m_MvX = Time.deltaTime * m_MvSpeed;
             transform.Translate(m_MvX, 0.0f, 0.0f);
@@ -50,14 +53,6 @@ public class CatController : MonoBehaviour
             a_vPos.x = -8.0f;
         }
         transform.position = a_vPos;
-    }
-    public void LButtonDown()
-    {
-        transform.Translate(-2, 0, 0);
-    }
-    public void RButtonDown()
-    {
-        transform.Translate(2, 0, 0);
     }
 }
 

@@ -64,6 +64,12 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("GameScene");
         }
 
+        // --- 플레이어가 화면 좌우를 벗어나지 못하게 막기
+        Vector3 pos = transform.position;
+        if (pos.x < -2.0f) pos.x = -2.0f;
+        if (pos.x > 2.0f) pos.x = 2.0f;
+        transform.position = pos;
+        // --- 플레이어가 화면 좌우를 벗어나지 못하게 막기
     }
 
     private void OnTriggerEnter2D(Collider2D other)

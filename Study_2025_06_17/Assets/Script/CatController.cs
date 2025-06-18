@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.Jobs;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class CatController : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D Rigd;
     private CapsuleCollider2D CapsuleColider;
+    private PointArrow pointer;
     [SerializeField] private float MaxSpeed = 3.5f;
     private bool OnGround;
     private void Start()
@@ -18,6 +22,7 @@ public class CatController : MonoBehaviour
         Rigd = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         CapsuleColider = GetComponent<CapsuleCollider2D>();
+        pointer = GameObject.FindObjectOfType<PointArrow>();
     }
     private void Update()
     {
@@ -85,6 +90,13 @@ public class CatController : MonoBehaviour
         {   // OnGround 상태에서 점프키를 눌렀을 때
             Rigd.AddForce(Vector2.up * 350f);
         }
+        if (PointArrow.HealthPoint < 0)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                SceneManager.LoadScene("GameScene");
+            }
+        }
     }
     //public LayerMask layerMask;
     //private void GroundRay()
@@ -114,6 +126,21 @@ public class CatController : MonoBehaviour
         {
             OnGround = false;
             animator.SetBool("OnGround", OnGround);
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.name == "Fish(Clone)")
+        {
+            PointArrow.HealthPoint++;
+            PointArrow.Hit = true;
+            Destroy(collision.gameObject);
+        }
+        if (collision.name == "arrow(Clone)")
+        {
+            PointArrow.HealthPoint--;
+            PointArrow.Hit = true;
+            Destroy(collision.gameObject);
         }
     }
 }

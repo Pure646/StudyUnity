@@ -5,25 +5,25 @@ using UnityEngine;
 public class SystemEvent : MonoBehaviour
 {
     private List<GameObject> Clouds = new List<GameObject>();
-    private GameObject[] InstansCloud = new GameObject[50];
+    private List<GameObject> Fishs = new List<GameObject>();
     [SerializeField] private GameObject Cloud;
+    [SerializeField] private GameObject Fish;
     private Vector2 BaseVec = new Vector2(0, 0);
     private GameObject cat;
     private int CloudCount;
     private int RandomCount1;
     private int RandomCount2;
     private int RandomCount3;
+    private int RandomFishCount;
     private bool OnDestroy;
-    private int minuse;
-    private int RoundCount;
 
     private void Start()
     {
         cat = GameObject.Find("cat");
         for(int i = 0; i < 5; i++)
         {
-            InstansCloud[i] = Instantiate(Cloud, BaseVec + new Vector2(0, -4.5f + (2 * CloudCount)), Quaternion.identity);
-            Clouds.Add(InstansCloud[i]);
+            GameObject Clone = Instantiate(Cloud, BaseVec + new Vector2(0, -4.5f + (2 * CloudCount)), Quaternion.identity);
+            Clouds.Add(Clone);
             CloudCount++;
         }
     }
@@ -34,9 +34,12 @@ public class SystemEvent : MonoBehaviour
             if (cat.transform.position.y >= -4.5f + (2 * (CloudCount - 3)))
             {
                 RandomCount1 = Random.Range(1, 6);
-                InstansCloud[CloudCount] = Instantiate(Cloud, BaseVec + new Vector2(0, -4.5f + (2 * CloudCount)), Quaternion.identity);
-                Clouds.Add(InstansCloud[CloudCount]);
-                InstansCloud[CloudCount].transform.Find($"Cloud_Number{RandomCount1}").gameObject.SetActive(false);
+                
+                GameObject Clone = Instantiate(Cloud, BaseVec + new Vector2(0, -4.5f + (2 * CloudCount)), Quaternion.identity);
+                Clouds.Add(Clone);
+                Clone.transform.Find($"Cloud_Number{RandomCount1}").gameObject.SetActive(false);
+
+                HealingFish();
                 CloudCount++;
                 OnDestroy = true;
             }
@@ -50,17 +53,19 @@ public class SystemEvent : MonoBehaviour
                 {
                     RandomCount2 = Random.Range(1, 6);
                 } while (RandomCount2 == RandomCount1);
-                InstansCloud[CloudCount] = Instantiate(Cloud, BaseVec + new Vector2(0, -4.5f + (2 * CloudCount)), Quaternion.identity);
-                Clouds.Add(InstansCloud[CloudCount]);
-                InstansCloud[CloudCount].transform.Find($"Cloud_Number{RandomCount1}").gameObject.SetActive(false);
-                InstansCloud[CloudCount].transform.Find($"Cloud_Number{RandomCount2}").gameObject.SetActive(false);
+                GameObject Clone = Instantiate(Cloud, BaseVec + new Vector2(0, -4.5f + (2 * CloudCount)), Quaternion.identity);
+                Clouds.Add(Clone);
+                Clone.transform.Find($"Cloud_Number{RandomCount1}").gameObject.SetActive(false);
+                Clone.transform.Find($"Cloud_Number{RandomCount2}").gameObject.SetActive(false);
+
+                HealingFish();
                 CloudCount++;
                 OnDestroy = true;
             }
         }
         else if(CloudCount >= 20)
         {
-            if (cat.transform.position.y >= -4.5f + (2 * (CloudCount - 3 + RoundCount)))
+            if (cat.transform.position.y >= -4.5f + (2 * (CloudCount - 3)))
             {
                 RandomCount1 = Random.Range(1, 6);
                 do
@@ -72,35 +77,38 @@ public class SystemEvent : MonoBehaviour
                     RandomCount3 = Random.Range(1, 6);
                 } while (RandomCount3 == RandomCount2 || RandomCount3 == RandomCount1);
 
-                InstansCloud[CloudCount] = Instantiate(Cloud, BaseVec + new Vector2(0, -4.5f + (2 * (CloudCount + RoundCount))), Quaternion.identity);
-                Clouds.Add(InstansCloud[CloudCount]);
-                InstansCloud[CloudCount].transform.Find($"Cloud_Number{RandomCount1}").gameObject.SetActive(false);
-                InstansCloud[CloudCount].transform.Find($"Cloud_Number{RandomCount2}").gameObject.SetActive(false);
-                InstansCloud[CloudCount].transform.Find($"Cloud_Number{RandomCount3}").gameObject.SetActive(false);
+                GameObject Clone = Instantiate(Cloud, BaseVec + new Vector2(0, -4.5f + (2 * CloudCount)), Quaternion.identity);
+                Clouds.Add(Clone);
+                Clone.transform.Find($"Cloud_Number{RandomCount1}").gameObject.SetActive(false);
+                Clone.transform.Find($"Cloud_Number{RandomCount2}").gameObject.SetActive(false);
+                Clone.transform.Find($"Cloud_Number{RandomCount3}").gameObject.SetActive(false);
+
+                HealingFish();
                 CloudCount++;
                 OnDestroy = true;
             }
         }
+
         if (Clouds.Count >= 10 && OnDestroy)
         {
-            if(CloudCount == 50)
-            {
-                CloudCount = 20;
-                minuse = 0;
-                RoundCount = RoundCount + 30;
-            }
-            if (InstansCloud[49] != null)
-            {
-                Clouds.Remove(InstansCloud[40 + minuse]);
-                Destroy(InstansCloud[40 + minuse]);
-                minuse++;
-            }
-            else
-            {
-                Clouds.Remove(InstansCloud[CloudCount - 10]);
-                Destroy(InstansCloud[CloudCount - 10]);
-            }
+            Destroy(Clouds[0]);
+            Clouds.RemoveAt(0);
+
             OnDestroy = false;
+        }
+        if (Fishs.Count >= 10)
+        {
+            Destroy(Fishs[0]);
+            Fishs.RemoveAt(0);
+        }
+    }
+    private void HealingFish()
+    {
+        RandomFishCount = Random.Range(1, 21);
+        if (RandomFishCount <= 5)
+        {
+            GameObject FishClone = Instantiate(Fish, new Vector2(-3.5f + (1.75f * (RandomFishCount - 1)), -3.5f + (2f * CloudCount)), Quaternion.identity);
+            Fishs.Add(FishClone);
         }
     }
     

@@ -9,8 +9,12 @@ public class PointArrow : MonoBehaviour
     private GameObject cat;
     private Image[] Heart = new Image[3];
     private Text Point_Tx;
-    private int HealthPoint = 6;
-    private bool Hit;
+    public static int HealthPoint = 6;
+    public static bool Hit;
+
+    public GameObject GameOver;
+    private Text Total_Tx;
+    private float TotalPoint = 0;
 
     [SerializeField] private GameObject Arrow;
     private int TimeCount = 2;
@@ -18,18 +22,23 @@ public class PointArrow : MonoBehaviour
     private void Start()
     {
         cat = GameObject.Find("cat");
-        Point_Tx = GameObject.Find("Point").GetComponent<Text>();
         for (int i = 0; i < Heart.Length; i++)
         {
             Heart[i] = GameObject.Find($"Heart_Number{i + 1}").GetComponent<Image>();
             Heart[i].fillAmount = 1;
         }
+
+        Point_Tx = GameObject.Find("Point").GetComponent<Text>();
     }
 
     private void Update()
     {
+        if(cat.transform.position.y >= TotalPoint)
+        {
+            TotalPoint = cat.transform.position.y;
+        }
         Point_Tx.text = $"Point : {(cat.transform.position.y).ToString("F2")}  ";
-        if(Hit)
+        if(Hit == true)
         {
             if(HealthPoint == 6)
             {
@@ -60,11 +69,15 @@ public class PointArrow : MonoBehaviour
             else if(HealthPoint == 0)
             {
                 Heart[0].fillAmount = 0f;
+                GameOver.SetActive(true);
+                Total_Tx = GameObject.FindObjectOfType<Text>();
+                Total_Tx.text = $"Total : {TotalPoint.ToString("F2")}";
             }
             else if(HealthPoint >= 7)
             {
                 HealthPoint = 6;
             }
+            Hit = false;
         }
 
         if(TimeCount <= Time.time)
@@ -73,6 +86,6 @@ public class PointArrow : MonoBehaviour
             int RandomNumber = Random.Range(1, 6);
             GameObject clone = Instantiate(Arrow, new Vector2(-3.5f + (1.75f * (RandomNumber - 1)), cat.transform.position.y + 30f), Quaternion.identity);
         }
-    }
 
+    }
 }

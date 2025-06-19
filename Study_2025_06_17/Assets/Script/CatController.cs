@@ -10,9 +10,8 @@ public class CatController : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D Rigd;
-    private CapsuleCollider2D CapsuleColider;
-    private PointArrow pointer;
     [SerializeField] private float MaxSpeed = 3.5f;
+    [HideInInspector] public static bool UsedDash;
     private bool OnGround;
     private void Start()
     {
@@ -21,37 +20,52 @@ public class CatController : MonoBehaviour
 
         Rigd = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        CapsuleColider = GetComponent<CapsuleCollider2D>();
-        pointer = GameObject.FindObjectOfType<PointArrow>();
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        if(PointArrow.HealthPoint > 0)
         {
-            if (transform.eulerAngles.y == 0f)
+            if(Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                if (transform.eulerAngles.y == 0f)
+                {
+                    transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+                }
             }
-        }
-        if(Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if(transform.eulerAngles.y == 180f)
+            if(Input.GetKeyDown(KeyCode.RightArrow))
             {
-                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                if(transform.eulerAngles.y == 180f)
+                {
+                    transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                }
             }
-        }
-        if (Input.GetKey(KeyCode.LeftArrow)) 
-        {
-            if(Rigd.velocity.x > MaxSpeed * -1f)
+            if (Input.GetKey(KeyCode.LeftArrow)) 
             {
-                Rigd.AddForce(Vector2.left, ForceMode2D.Impulse);       //ForceMode2D.Impulse : 순간적인 힘을 줘서 방향을 바꿈.
+                if(Rigd.velocity.x > MaxSpeed * -1f)
+                {
+                    Rigd.AddForce(Vector2.left, ForceMode2D.Impulse);       //ForceMode2D.Impulse : 순간적인 힘을 줘서 방향을 바꿈.
+                }
+                if (Input.GetKey(KeyCode.Z) && UsedDash == false)
+                {
+                    UsedDash = true;
+                    Rigd.AddForce(Vector2.left * 30, ForceMode2D.Impulse);
+                }
             }
-        }
-        if (Input.GetKey(KeyCode.RightArrow)) 
-        {
-            if(Rigd.velocity.x < MaxSpeed * 1f)
+            if (Input.GetKey(KeyCode.RightArrow)) 
             {
-                Rigd.AddForce(Vector2.right, ForceMode2D.Impulse);
+                if(Rigd.velocity.x < MaxSpeed * 1f)
+                {
+                    Rigd.AddForce(Vector2.right, ForceMode2D.Impulse);
+                }
+                if(Input.GetKey(KeyCode.Z) && UsedDash == false)
+                {
+                    UsedDash = true;
+                    Rigd.AddForce(Vector2.right * 30, ForceMode2D.Impulse);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && OnGround)
+            {   // OnGround 상태에서 점프키를 눌렀을 때
+                Rigd.AddForce(Vector2.up * 350f);
             }
         }
         if(Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
@@ -85,12 +99,7 @@ public class CatController : MonoBehaviour
         {   // 오른쪽 최대치
             transform.position = new Vector2(-3.5f, transform.position.y);
         }
-        
-        if (Input.GetKeyDown(KeyCode.Space) && OnGround)
-        {   // OnGround 상태에서 점프키를 눌렀을 때
-            Rigd.AddForce(Vector2.up * 350f);
-        }
-        if (PointArrow.HealthPoint < 0)
+        if (PointArrow.HealthPoint <= 0)
         {
             if(Input.GetMouseButtonDown(0))
             {
@@ -98,20 +107,6 @@ public class CatController : MonoBehaviour
             }
         }
     }
-    //public LayerMask layerMask;
-    //private void GroundRay()
-    //{
-    //    if (Physics2D.Raycast(transform.position, Vector2.down, 1f, layerMask))
-    //    {
-    //        OnGround = true;
-    //        animator.SetBool("OnGround", OnGround);
-    //    }
-    //    else
-    //    {
-    //        OnGround = false;
-    //        animator.SetBool("OnGround", OnGround);
-    //    }
-    //}
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (Rigd.velocity.y <= 0f)
@@ -141,6 +136,11 @@ public class CatController : MonoBehaviour
             PointArrow.HealthPoint--;
             PointArrow.Hit = true;
             Destroy(collision.gameObject);
+        }
+        if(collision.name == "Water")
+        {
+            PointArrow.HealthPoint = 0;
+            PointArrow.Hit = true;
         }
     }
 }

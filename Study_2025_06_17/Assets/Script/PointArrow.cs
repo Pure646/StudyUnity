@@ -5,19 +5,21 @@ using UnityEngine.UI;
 
 public class PointArrow : MonoBehaviour
 {
-    private static float FinalPoint;
+    [HideInInspector] public static float TotalPoint;
+    [SerializeField] private Text DeadTotal;
+    [SerializeField] private GameObject Arrow;
+    [SerializeField] private Image DashGage;
+
     private GameObject cat;
     private Image[] Heart = new Image[3];
     private Text Point_Tx;
-    public static int HealthPoint = 6;
-    public static bool Hit;
-
-    public GameObject GameOver;
     private Text Total_Tx;
-    private float TotalPoint = 0;
-
-    [SerializeField] private GameObject Arrow;
-    private int TimeCount = 2;
+    private float MyPoint = 0;
+    private bool OnDash;
+    public GameObject GameOver;
+    public static int TimeCount = 2;
+    public static int HealthPoint;
+    public static bool Hit;
 
     private void Start()
     {
@@ -29,15 +31,21 @@ public class PointArrow : MonoBehaviour
         }
 
         Point_Tx = GameObject.Find("Point").GetComponent<Text>();
+        Total_Tx = GameObject.Find("TotalPoint").GetComponent<Text>();
+        Total_Tx.text = $" TotalPoint : {TotalPoint.ToString("F2")} ";
+
+        HealthPoint = 6;
     }
 
     private void Update()
     {
-        if(cat.transform.position.y >= TotalPoint)
+        MyPoint = cat.transform.position.y;
+        if(TotalPoint <= MyPoint)
         {
-            TotalPoint = cat.transform.position.y;
+            TotalPoint = MyPoint;
+            Total_Tx.text = $" TotalPoint : {TotalPoint.ToString("F2")} ";
         }
-        Point_Tx.text = $"Point : {(cat.transform.position.y).ToString("F2")}  ";
+        Point_Tx.text = $"Point : {MyPoint.ToString("F2")}  ";
         if(Hit == true)
         {
             if(HealthPoint == 6)
@@ -70,8 +78,7 @@ public class PointArrow : MonoBehaviour
             {
                 Heart[0].fillAmount = 0f;
                 GameOver.SetActive(true);
-                Total_Tx = GameObject.FindObjectOfType<Text>();
-                Total_Tx.text = $"Total : {TotalPoint.ToString("F2")}";
+                DeadTotal.text = $"TotalPoint = {TotalPoint.ToString("F2")}";
             }
             else if(HealthPoint >= 7)
             {
@@ -80,12 +87,25 @@ public class PointArrow : MonoBehaviour
             Hit = false;
         }
 
-        if(TimeCount <= Time.time)
+        if(TimeCount <= Time.time && HealthPoint > 0)
         {
-            TimeCount = TimeCount + 2;
+            TimeCount = TimeCount + 1;
             int RandomNumber = Random.Range(1, 6);
-            GameObject clone = Instantiate(Arrow, new Vector2(-3.5f + (1.75f * (RandomNumber - 1)), cat.transform.position.y + 30f), Quaternion.identity);
+            GameObject clone = Instantiate(Arrow, new Vector2(-3.5f + (1.75f * (RandomNumber - 1)), cat.transform.position.y + 15f), Quaternion.identity);
         }
-
+        if (CatController.UsedDash == true && OnDash)
+        {
+            DashGage.fillAmount = 0f;
+            OnDash = false;
+        }
+        if(CatController.UsedDash == true && OnDash == false)
+        {
+            DashGage.fillAmount += Time.deltaTime;
+            if(DashGage.fillAmount >= 1f)
+            {
+                CatController.UsedDash = false;
+                OnDash = true;
+            }
+        }
     }
 }

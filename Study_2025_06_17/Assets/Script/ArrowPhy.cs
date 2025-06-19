@@ -19,6 +19,9 @@ public class ArrowPhy : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        //else if()
+        if(PointArrow.HealthPoint <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

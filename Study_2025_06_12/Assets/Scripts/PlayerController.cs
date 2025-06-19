@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private float walkForce = 30.0f;
     private float maxWalkSpeed = 2.0f;
 
+    private float walkSpeed = 3.0f;
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -37,10 +38,11 @@ public class PlayerController : MonoBehaviour
         float speedx = Mathf.Abs(this.rigid2D.velocity.x);
 
         // 스피드 제한
-        if(speedx < this.maxWalkSpeed)
-        {
-            this.rigid2D.AddForce(transform.right * Key * this.walkForce);
-        }
+        //if(speedx < this.maxWalkSpeed)
+        //{
+        //    this.rigid2D.AddForce(transform.right * Key * this.walkForce);
+        //}
+        rigid2D.velocity = new Vector2((Key * walkSpeed), rigid2D.velocity.y);
 
         // 움직이는 방향에 따라 반전한다.
         if(Key != 0)
@@ -66,8 +68,8 @@ public class PlayerController : MonoBehaviour
 
         // --- 플레이어가 화면 좌우를 벗어나지 못하게 막기
         Vector3 pos = transform.position;
-        if (pos.x < -2.0f) pos.x = -2.0f;
-        if (pos.x > 2.0f) pos.x = 2.0f;
+        if (pos.x < -2.5f) pos.x = -2.5f;
+        if (pos.x > 2.5f) pos.x = 2.5f;
         transform.position = pos;
         // --- 플레이어가 화면 좌우를 벗어나지 못하게 막기
     }

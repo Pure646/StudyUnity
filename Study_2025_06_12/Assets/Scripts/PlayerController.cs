@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private float maxWalkSpeed = 2.0f;
 
     private float walkSpeed = 3.0f;
+    private float m_ReserveJump;
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -22,13 +23,25 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space) == true)
+        {
+            m_ReserveJump = 3;
+        }
+
         // 점프한다.
-        if(Input.GetKeyDown(KeyCode.Space) && this.rigid2D.velocity.y == 0)
+        //if(Input.GetKeyDown(KeyCode.Space) && this.rigid2D.velocity.y == 0)
+        if((0 < m_ReserveJump) && 
+            (-0.05f <= rigid2D.velocity.y && rigid2D.velocity.y <= 0.02f))
         {
             this.animator.SetTrigger("JumpTrigger");
             this.rigid2D.AddForce(transform.up * this.jumpForce);
-        }
 
+            m_ReserveJump = 0;
+        }
+        if(0 < m_ReserveJump)
+        {
+            m_ReserveJump--;
+        }
         // 좌우 이동
         int Key = 0;
         if (Input.GetKey(KeyCode.RightArrow)) Key = 1;
@@ -74,12 +87,20 @@ public class PlayerController : MonoBehaviour
         // --- 플레이어가 화면 좌우를 벗어나지 못하게 막기
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (other.gameObject.name.Contains("flag") == true)
+        if (coll.gameObject.name.Contains("flag") == true)
         {
             //Debug.Log("골");
             SceneManager.LoadScene("ClearScene");
         }
+        else if(coll.gameObject.name.Contains("WaterRoot") == true)
+        {
+            Die();
+        }
+    }
+    private void Die()
+    {
+        SceneManager.LoadScene("ClearScene");
     }
 }

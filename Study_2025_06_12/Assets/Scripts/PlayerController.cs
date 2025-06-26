@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerController : MonoBehaviour
@@ -13,7 +14,14 @@ public class PlayerController : MonoBehaviour
     private float maxWalkSpeed = 2.0f;
 
     private float walkSpeed = 3.0f;
-    private float m_ReserveJump;
+    private int m_ReserveJump;      // 점프 예약 변수
+
+    private float hp = 3.0f;
+    public Image[] hpImage;
+
+    private GameObject m_OverlapBlock = null;
+    // 보상이나 화살의 두세번 연속 충돌 방지용 변수
+
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -98,9 +106,52 @@ public class PlayerController : MonoBehaviour
         {
             Die();
         }
+        else if (coll.gameObject.name.Contains("arrowPrefab") == true)
+        {
+            if(m_OverlapBlock != coll.gameObject)
+            {
+                hp -= 1.0f;
+                HPImgUpdate();
+                if (hp <= 0.0f)  // 사망처리
+                {
+                    Die();
+                }
+                m_OverlapBlock = coll.gameObject;
+            }
+            Destroy(coll.gameObject);
+        }
+        else if(coll.gameObject.name.Contains("fish") == true)
+        {
+            if(m_OverlapBlock != coll.gameObject)
+            {
+                hp += 0.5f;         //에너지 증가
+                if (3.0f < hp)
+                    hp = 3.0f;
+                HPImgUpdate();
+
+                m_OverlapBlock = coll.gameObject;
+            }
+            Destroy(coll.gameObject);
+        }
     }
     private void Die()
     {
-        SceneManager.LoadScene("ClearScene");
+        SceneManager.LoadScene("GameOverScene");
+    }
+    private void HPImgUpdate()
+    {
+        float a_CacHp = 0.0f;
+        for (int i = 0; i < hpImage.Length; i++) 
+        {
+            a_CacHp = hp - (float)i;
+            if (a_CacHp < 0.0f)
+                a_CacHp = 0.0f;
+            if (1.0f < a_CacHp)
+                a_CacHp = 1.0f;
+            if (0.45f < a_CacHp && a_CacHp < 0.55f)
+                a_CacHp = 0.445f;
+
+            hpImage[i].fillAmount = a_CacHp;
+        }
     }
 }

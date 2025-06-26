@@ -51,7 +51,7 @@ public class GameMgr : MonoBehaviour
     }
     public static void Load()
     {
-        m_BestHeight = PlayerPrefs.GetFloat("HightScore", 0.0f);
+        m_BestHeight = PlayerPrefs.GetFloat("HightScore", m_BestHeight);
     }
 
 }

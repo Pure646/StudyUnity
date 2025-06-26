@@ -1621,6 +1621,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 973667f1d792afc469961519bb35692c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpImage:
+  - {fileID: 101251824}
+  - {fileID: 992612705}
+  - {fileID: 577910805}
 --- !u!70 &1363817751
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2724,6 +2728,6 @@ SceneRoots:
   - {fileID: 1781228710}
   - {fileID: 1385468477}
   - {fileID: 1782000305}
-  - {fileID: 2060667534}
-  - {fileID: 386033237}
   - {fileID: 2021195168}
+  - {fileID: 386033237}
+  - {fileID: 2060667534}

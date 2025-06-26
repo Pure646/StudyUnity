@@ -45,6 +45,6 @@ public class CloudWvGenerator : MonoBehaviour
 
         GameObject go = Instantiate(CloudWave);
         go.transform.position = new Vector3(0.0f, _Height, 0.0f);
-        go.GetComponent<CloudWaveCtrl>().SethideCloud(hideCount);
+        go.GetComponent<CloudWaveCtrl>().SetHideCloud(hideCount);
     }
 }

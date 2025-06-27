@@ -42,6 +42,7 @@ public class GameOverMgr : MonoBehaviour
     private void CD_BtnClick()
     {
         PlayerPrefs.DeleteAll();            // 저장 값 모두 초기화 하기
+        GameMgr.m_BestHeight = 0.0f;
         GameMgr.m_CurBHeight = 0.0f;
 
         GameMgr.Load();

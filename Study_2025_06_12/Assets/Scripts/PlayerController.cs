@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,16 +23,28 @@ public class PlayerController : MonoBehaviour
     private GameObject m_OverlapBlock = null;
     // 보상이나 화살의 두세번 연속 충돌 방지용 변수
 
+    // -- 대쉬 관련 변수들
+    private ParticleSystem dashParticle;
+    private bool isDashing;
+    private float dashPower = 30.0f;
+    private float dashCooldown = 1.0f;
+    private float dashTimer = 0.0f;
+    private float dashDuration = 0.1f;
+    public Image dashGaugeImg;
+
     private void Start()
     {
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
         this.rigid2D = GetComponent<Rigidbody2D>();
         this.animator = GetComponent<Animator>();
+
+        this.dashParticle = GetComponentInChildren<ParticleSystem>();
+        dashTimer = dashCooldown;
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) == true)
+        if (Input.GetKeyDown(KeyCode.Space) == true)
         {
             m_ReserveJump = 3;
         }
@@ -71,6 +84,7 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(Key, 1, 1);
         }
 
+
         // 플레이어 속도에 맞춰 애니메이션 속도를 바꾼다.
         if(this.rigid2D.velocity.y == 0)
         {
@@ -80,6 +94,8 @@ public class PlayerController : MonoBehaviour
         {
             this.animator.speed = 1.0f;
         }
+
+        HandleDash();
 
         // 플레이어가 화면 밑으로 나갔다면 처음부터
         if (transform.position.y < -10f)
@@ -153,5 +169,35 @@ public class PlayerController : MonoBehaviour
 
             hpImage[i].fillAmount = a_CacHp;
         }
+    }
+    private void HandleDash()
+    {
+        if (dashTimer < dashCooldown)           // dashColldown == 1.0f
+            dashTimer += Time.deltaTime;
+        
+        // 대시 입력 처치
+        if(Input.GetKeyDown(KeyCode.D) && dashTimer >= dashCooldown)
+        {
+            //--- StartDash
+            isDashing = true;
+            dashTimer = 0.0f;
+            dashParticle.Play();
+        }
+
+        // 대시 동작 처리
+        if(isDashing == true)
+        {
+            if(dashTimer <= dashDuration)
+            {
+                this.rigid2D.velocity = transform.right * transform.localScale.x * dashPower;
+            }
+            else
+            {
+                // ---EndDash
+                isDashing = false;
+                dashParticle.Stop();
+            }
+        }
+        dashGaugeImg.fillAmount = Mathf.Clamp01(dashTimer / dashCooldown);
     }
 }

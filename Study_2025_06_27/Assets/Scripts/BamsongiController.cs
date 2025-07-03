@@ -10,18 +10,39 @@ public class BamsongiController : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         //Shoot(new Vector3(0, 200, 2000));
 
-        Destroy(this.gameObject, 15.0f);
+        Destroy(this.gameObject, 10.0f);
     }
     public void Shoot(Vector3 dir)
     {
         GetComponent<Rigidbody>().AddForce(dir);
     }
-    public void OnCollisionEnter(Collision coll)
+    private void OnCollisionEnter(Collision coll)
     {
-        if (coll.gameObject.CompareTag("target"))
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<ParticleSystem>().Play();
+
+        Destroy(gameObject, 4.0f);
+    }
+
+    private void OnTriggerEnter(Collider coll)
+    {
+        if (coll.gameObject.tag == "Pet")
         {
             GetComponent<Rigidbody>().isKinematic = true;
             GetComponent<ParticleSystem>().Play();
+
+            Destroy(gameObject, 4.0f);
+
+            //--- 밤송이 외형 안보이게 정리...
+            GetComponent<SphereCollider>().enabled = false;
+
+            MeshRenderer[] a_ChildList = gameObject.GetComponentsInChildren<MeshRenderer>();
+            for(int i = 0; i < a_ChildList.Length; i++)
+            {
+                a_ChildList[i].enabled = false;
+            }
+
+            Destroy(coll.gameObject);
         }
     }
 }

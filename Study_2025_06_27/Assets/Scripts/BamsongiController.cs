@@ -20,7 +20,7 @@ public class BamsongiController : MonoBehaviour
     {
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<ParticleSystem>().Play();
-
+        
         Destroy(gameObject, 4.0f);
     }
 
@@ -35,12 +35,16 @@ public class BamsongiController : MonoBehaviour
 
             //--- 밤송이 외형 안보이게 정리...
             GetComponent<SphereCollider>().enabled = false;
-
             MeshRenderer[] a_ChildList = gameObject.GetComponentsInChildren<MeshRenderer>();
             for(int i = 0; i < a_ChildList.Length; i++)
             {
                 a_ChildList[i].enabled = false;
             }
+            // -- 보상주기
+            Game_Mgr.Inst.AddScore();
+            // 싱글톤에서 하이라이터에 유일하게 하나여야 하며, 사라지지 않으며, 유지가 되어야한다.
+            // Hierarchy 에서 딱 하나만 존재해야한다.
+            // 다른 Script에도 만들수 있지만 단 하나의 Script를 연결 해야만 한다.
 
             Destroy(coll.gameObject);
         }

@@ -6,6 +6,8 @@ public class BasketController : MonoBehaviour
     public AudioClip bombSE;
     private AudioSource aud;
     private GameObject director;
+    private ParticleSystem particleSys;
+    private GameDirector m_GDirect;
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -13,9 +15,15 @@ public class BasketController : MonoBehaviour
 
         this.aud = GetComponent<AudioSource>();
         this.director = GameObject.Find("GameDirector");
+        particleSys = GetComponent<ParticleSystem>();
+        m_GDirect = director.GetComponent<GameDirector>();
     }
     private void Update()
     {
+        if(m_GDirect != null && m_GDirect.time <= 0.0f)
+        {
+            return;
+        }
         if(Input.GetMouseButtonDown(0) == true)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -27,7 +35,6 @@ public class BasketController : MonoBehaviour
                 transform.position = new Vector3(x, 0, z);
             }
         }
-        
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -35,12 +42,18 @@ public class BasketController : MonoBehaviour
         {
             this.aud.PlayOneShot(this.appleSE);
             this.director.GetComponent<GameDirector>().GetApple();
+            var main = particleSys.main;
+            main.startColor = Color.white;
         }
         if(other.gameObject.CompareTag("Bomb"))
         {
             this.aud.PlayOneShot(this.bombSE);
             this.director.GetComponent<GameDirector>().GetBomb();
+            var main = particleSys.main;
+            main.startColor = Color.black;
         }
+        GetComponent<ParticleSystem>().Play();
+
         Destroy(other.gameObject);
     }
 }

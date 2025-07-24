@@ -1,0 +1,2 @@
+m_Render.material.mainTextureOffset 
+: Material의 Offset 값을 바꾸어진다.

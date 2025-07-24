@@ -1,0 +1,2 @@
+// CamResol.m_VpWMin : 화면 최소 좌표
+// CamResol.m_VpWMax : 화면 최대 좌표

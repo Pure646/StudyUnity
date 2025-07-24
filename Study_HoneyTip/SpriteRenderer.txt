@@ -1,0 +1,4 @@
+SpriteRenderer sprRend = gameObject.GetComponentInChildren<SpriteRenderer>();
+
+// sprRend.bounds.size.x    // 스프라이트의 가로 사이즈
+// sprRend.bounds.size.y    // 스프라이트의 세로 사이즈

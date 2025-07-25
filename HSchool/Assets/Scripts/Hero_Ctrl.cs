@@ -11,9 +11,14 @@ public class Hero_Ctrl : MonoBehaviour
     private Vector3 moveDir = Vector3.zero;
     // --- 키보드 입력값 변수 선언.
 
-    // 주인공 화면 밖으로 나갈 수 없도록 막기 위한 변수
+    // --- 주인공 화면 밖으로 나갈 수 없도록 막기 위한 변수
     private Vector3 HalfSize = Vector3.zero;
     private Vector3 m_CacCurPos = Vector3.zero;
+
+    // --- 총알 발사 변수
+    public GameObject m_BulletPrefab = null;
+    public GameObject m_ShootPos = null;
+    private float m_ShootCool = 0.0f;           // 총알 발사 주기 계산용 변수
 
     private void Start()
     {
@@ -43,6 +48,8 @@ public class Hero_Ctrl : MonoBehaviour
         }
 
         LismitMove();
+
+        FireUpdate();
     }
     private void LismitMove()
     {
@@ -59,5 +66,17 @@ public class Hero_Ctrl : MonoBehaviour
             m_CacCurPos.y = CamResol.m_VpWMax.y - HalfSize.y;
 
         transform.position = m_CacCurPos;
+    }
+    private void FireUpdate()
+    {
+        if (0.0f < m_ShootCool)
+            m_ShootCool -= Time.deltaTime;
+        if(m_ShootCool <= 0.0f)     // 주기적으로 자동 발사
+        {
+            m_ShootCool = 0.15f;
+
+            GameObject a_CloneObj = Instantiate(m_BulletPrefab);
+            a_CloneObj.transform.position = m_ShootPos.transform.position;
+        }
     }
 }

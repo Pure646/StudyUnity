@@ -54,4 +54,33 @@ public class Monster_Ctrl : MonoBehaviour
         m_CurPos.y = m_SpawnPos.y + Mathf.Sin(m_CacPosY) * m_RandY;
         transform.position = m_CurPos;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "AllyBullet")
+        {
+            TakeDamage(50.0f);
+            Destroy(collision.gameObject);
+        }
+    }
+    public void TakeDamage(float a_Value)
+    {
+        if (m_CurHp <= 0.0f)        // 이 몬스터가 이미 죽어 있으면...
+            return;                 // 데미지를 차감할 필요 없으니 리턴 시키겠다는 뜻
+
+        float a_CacDmg = a_Value;
+        if (m_CurHp < a_Value)
+            a_CacDmg = m_CurHp;
+        Vector3 a_StCacPos = new Vector3(transform.position.x, transform.position.y + 1.14f, 0.0f);
+        Game_Mgr.Inst.DamageText(-a_CacDmg, a_StCacPos, Color.red);
+
+        m_CurHp -= a_Value;
+        if (m_CurHp < 0.0f)
+            m_CurHp = 0.0f;
+
+        if (m_CurHp <= 0.0f)
+            Destroy(gameObject);
+
+        if(m_HpBar != null)
+            m_HpBar.fillAmount = m_CurHp / m_MaxHp;
+    }
 }

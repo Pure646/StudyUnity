@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Hero_Ctrl : MonoBehaviour
 {
+    // --- 주인공 체력 변수
+    float m_MaxHp = 200.0f;
+    [HideInInspector] public float m_CurHp = 200.0f;
+    public Image m_HpBar = null;
+
+    // --- 키보드 입력값 변수 선언.
     private float h = 0.0f;
     private float v = 0.0f;
-
     private float moveSpeed = 7.0f;
     private Vector3 moveDir = Vector3.zero;
-    // --- 키보드 입력값 변수 선언.
 
     // --- 주인공 화면 밖으로 나갈 수 없도록 막기 위한 변수
     private Vector3 HalfSize = Vector3.zero;
@@ -77,6 +82,37 @@ public class Hero_Ctrl : MonoBehaviour
 
             GameObject a_CloneObj = Instantiate(m_BulletPrefab);
             a_CloneObj.transform.position = m_ShootPos.transform.position;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D coll)
+    {
+        if(coll.tag == "Monster")
+        {
+            Monster_Ctrl a_RefMon = coll.gameObject.GetComponent<Monster_Ctrl>();
+            if (a_RefMon != null)
+                a_RefMon.TakeDamage(1000);
+
+            TakeDamage(50.0f);
+        }
+    }
+    private void TakeDamage(float a_Value)
+    {
+        if (m_CurHp <= 0.0f)
+            return;
+
+        Vector3 a_StCacPos = new Vector3(transform.position.x, transform.position.y + 1.14f, 0.0f);
+        Game_Mgr.Inst.DamageText(-a_Value, a_StCacPos, Color.blue);
+
+        m_CurHp -= a_Value;
+        if (m_CurHp < 0.0f)
+            m_CurHp = 0.0f;
+
+        if (m_HpBar != null)
+            m_HpBar.fillAmount = m_CurHp / m_MaxHp;
+
+        if(m_CurHp <= 0.0f)     // 사망처리
+        {
+            Time.timeScale = 0.0f;      // 일시정지
         }
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,17 +24,22 @@ public class Monster_Ctrl : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (Hero_Ctrl.CharacterHp <= 0.0f)
+        {
+            return;
+        }
         if(collision.gameObject.tag == "Hero")
         {
             Destroy(gameObject);
         }
         if(collision.gameObject.tag == "Bullet")
         {
-            Damage = 0.25f - Armor;
+            Damage = Hero_Ctrl.AttackDamage - Armor;
             if(Damage <= 0.01f)
             {
                 Damage = 0.01f;
             }
+            TakeDamage(Damage * 100);
             MonsterHp -= Damage;
             MonsterImg.fillAmount = MonsterHp;
             if(MonsterHp <= 0)
@@ -44,6 +48,13 @@ public class Monster_Ctrl : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+    }
+    private void TakeDamage(float Value)
+    {
+        if (Hero_Ctrl.CharacterHp <= 0.0f)
+            return;
+        Vector3 MonPos = new Vector3(transform.position.x, transform.position.y + 1.14f, 0.0f);
+        Game_Mgr.Instance.DamageText(-Value, MonPos, Color.red);
     }
     private void ArmorSeting()
     {

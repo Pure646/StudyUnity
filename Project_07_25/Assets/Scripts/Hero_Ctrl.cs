@@ -19,9 +19,14 @@ public class Hero_Ctrl : MonoBehaviour
     [SerializeField] private Image CharacterHp_bar;
     public static float CharacterHp = 1;
 
+    // --- 공격력
+    public static float AttackDamage;
+
+    // 범위 안에 Coin
+    private float GoldPoint;
+    
     private void Start()
     {
-        CharacterHp = 1;
         // --- 캐릭터의 가로 반사이즈, 세로 반사이즈 구하기
         // 필드에 그려진 스프라이트 사이즈 얻어오기
         SpriteRenderer sprRend = gameObject.GetComponentInChildren<SpriteRenderer>();
@@ -32,6 +37,10 @@ public class Hero_Ctrl : MonoBehaviour
         HalfSize.z = 1.0f;
         // --- 캐릭터의 가로 반사이즈, 세로 반사이즈 구하기
         // (여백이 커서 조금 줄임.)
+
+        // 초기값
+        AttackDamage = 0.25f;
+        CharacterHp = 1;
     }
     private void Update()
     {
@@ -51,6 +60,13 @@ public class Hero_Ctrl : MonoBehaviour
 
             LismitMove();
         }
+    }
+    private void TakeDamage(float Value)
+    {
+        if (CharacterHp <= 0.0f)
+            return;
+        Vector3 HeroPos = new Vector3(transform.position.x, transform.position.y + 1.14f, 0.0f);
+        Game_Mgr.Instance.DamageText(-Value, HeroPos, Color.blue);
     }
     private void LismitMove()
     {
@@ -72,8 +88,13 @@ public class Hero_Ctrl : MonoBehaviour
     {
         if (collision.gameObject.tag == "Monster")
         {
-            CharacterHp -= 0.25f;
+            TakeDamage(25f);
+            CharacterHp -= 25f / 100f;
             CharacterHp_bar.fillAmount = CharacterHp;
+        }
+        if(collision.gameObject.tag == "Coin")
+        {
+            GoldPoint += 50f;
         }
     }
 }

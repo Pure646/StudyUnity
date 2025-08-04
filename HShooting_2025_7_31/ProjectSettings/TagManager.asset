@@ -4,10 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - AllyBullet
   - Monster
-  - Hero
-  - Bullet
-  - Coin
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX

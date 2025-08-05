@@ -10,31 +10,14 @@ public class Game_Mgr : MonoBehaviour
     [SerializeField] private Text Pointer;
     [SerializeField] private float SpawnTime;
     private float RealTime;
-    public static int point;
+    public static int point = 0;
 
     [SerializeField] private Image GameOver_Img;
     [SerializeField] private Text GameOverPointer;
-
-    // ΩÃ±€≈Ê
-    public static Game_Mgr Instance = null;
-
-    [Header("DamageTxt")]
-    [SerializeField] private Transform DamageCanvas = null;
-    [SerializeField] private GameObject DamageTxt = null;
-    private GameObject CloneTxt;
-    private DamageTxt D_Txt;
-    private Vector3 StCacPos;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
     private void Start()
     {
         Pointer.gameObject.SetActive(true);
         GameOver_Img.gameObject.SetActive(false);
-
-        point = 0;
     }
     private void Update()
     {
@@ -63,24 +46,11 @@ public class Game_Mgr : MonoBehaviour
             }
         }
     }
-    public void DamageText(float a_Value, Vector3 a_Pos, Color a_Color)
-    {
-        if (DamageCanvas == null || DamageTxt == null)
-            return;
-        CloneTxt = Instantiate(DamageTxt);
-        CloneTxt.transform.SetParent(DamageCanvas);
-        D_Txt = CloneTxt.GetComponent<DamageTxt>();
-        if(D_Txt != null)
-        {
-            D_Txt.InitDamage(a_Value, a_Color);
-        }
-        StCacPos = new Vector3(a_Pos.x, a_Pos.y, 0.0f);
-        CloneTxt.transform.position = StCacPos;
-    }
     private void MonsterSpawner()
     {
         float RandomY = Random.Range((int)CamResol.m_VpWMin.y + 1, (int)CamResol.m_VpWMax.y);
         Vector2 TransSpawn = new Vector2(CamResol.m_VpWMax.x + 1f, RandomY);
         GameObject Spawn = Instantiate(MonsterSpawn, TransSpawn, Quaternion.identity);
+        //if(CamResol.m_VpWMax.x)
     }
 }

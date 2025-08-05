@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - AllyBullet
   - Monster
-  - Hero
-  - Bullet
   layers:
   - Default
   - TransparentFX

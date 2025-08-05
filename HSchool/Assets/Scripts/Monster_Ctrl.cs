@@ -8,6 +8,12 @@ public enum MonType
     MT_Missile,
     MT_Boss
 }
+public enum BossState
+{
+    BS_APPEAR_MOVE,
+    BS_NORBAL_ATT,
+    BS_FEVER_ATT
+}
 public class Monster_Ctrl : MonoBehaviour
 {
     public MonType m_MonType = MonType.MT_Zombi;
@@ -25,6 +31,10 @@ public class Monster_Ctrl : MonoBehaviour
     private float m_CacPosY = 0.0f;     // 싸인 함수에 들어갈 누적 각도 계산용 변수
     private float m_RandY = 0.0f;       // 랜덤한 진폭값 저장용 변수
     private float m_CycleSpeed = 0.0f;  // 랜덤한 진동 속도 변수
+
+    private int m_ShootCount = 0;
+    private float shoot_Time;
+    BossState m_BossState = BossState.BS_APPEAR_MOVE;
 
     private void Start()
     {
@@ -54,14 +64,42 @@ public class Monster_Ctrl : MonoBehaviour
         m_CurPos.y = m_SpawnPos.y + Mathf.Sin(m_CacPosY) * m_RandY;
         transform.position = m_CurPos;
     }
+    private void Boss_AI_Update()
+    {
+        if (m_BossState == BossState.BS_APPEAR_MOVE)
+        {
+            m_CurPos = transform.position;
+            float a_ArrivePos = CamResol.m_VpWMax.x - 1.9f;
+
+            if (a_ArrivePos < m_CurPos.x)
+            {
+                m_CurPos.x += (-1.0f * Time.deltaTime * m_Speed);
+                if (m_CurPos.x <= a_ArrivePos)
+                {
+                    shoot_Time = 1.28f;
+                    m_BossState = BossState.BS_FEVER_ATT;
+                }
+            }
+            transform.position = m_CurPos; ;
+        }
+        else if (m_BossState == BossState.BS_NORBAL_ATT)
+        {
+
+        }
+        else if (m_BossState == BossState.BS_FEVER_ATT)
+        {
+
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "AllyBullet")
+        if (collision.tag == "AllyBullet")
         {
             TakeDamage(50.0f);
             Destroy(collision.gameObject);
         }
     }
+    
     public void TakeDamage(float a_Value)
     {
         if (m_CurHp <= 0.0f)        // 이 몬스터가 이미 죽어 있으면...

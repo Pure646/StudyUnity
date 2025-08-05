@@ -1442,6 +1442,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage_Canvas: {fileID: 155719690}
   DmgTxtRoot: {fileID: 9066904146294722536, guid: 2a388c6e8aadbc44fbd09af98bf9dd5f, type: 3}
+  m_CurScoreText: {fileID: 0}
+  m_BestScoreText: {fileID: 0}
 --- !u!4 &1142204229
 Transform:
   m_ObjectHideFlags: 0

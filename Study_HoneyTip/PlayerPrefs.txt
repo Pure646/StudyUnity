@@ -1,0 +1,24 @@
+PlayerPrefs.SetInt(string key, int value)		// 정수값 저장
+
+PlayerPrefs.SetFloat(string key, float value)		// 실수값 저장
+
+PlayerPrefs.SetString(string key, string value)	// 문자열 저장
+
+PlayerPrefs.GetInt(string key, int defaultValue = 0)		// 정수값 불러오기
+
+PlayerPrefs.GetFloat(string key, float defaultValue = 0.0f	// 실수값 불러오기
+
+PlayerPrefs.GetString(string key, string defaultValue = "")	// 문자열 불러오기
+
+PlayerPrefs.DeleteKey(string key);			// 특정 키 데이터 삭제
+
+PlayerPrefs.DeleteAll();				// 모든 저장 데이터 삭제 (주의!)
+
+PlayerPrefs.HasKey(string key);				// 해당 키가 존재하는지 확인
+
+
+🛠 대안: 더 복잡한 저장이 필요할 경우
+목적		대안
+파일 저장		System.IO, JsonUtility, BinaryFormatter 등 사용
+클라우드 저장	Unity Cloud Save, Google Play Games, iCloud 등
+구조화된 저장	SQLite, Firebase, Addressables 등도 가능

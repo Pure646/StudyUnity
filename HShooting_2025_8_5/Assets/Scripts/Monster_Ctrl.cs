@@ -156,7 +156,32 @@ public class Monster_Ctrl : MonoBehaviour
         }//if(m_BossState == BossState.BS_APPEAR_MOVE) //등장 이동 상태
         else if (m_BossState == BossState.BS_NORMAL_ATT) //일반 공격
         {
+            shoot_Time -= Time.deltaTime;
+            if (shoot_Time <= 0.0f)
+            {
+                // 일반공격
+                Vector3 a_TargetV = m_RefHero.transform.position - m_ShootPos.transform.position;
+                a_TargetV.z = 0.0f;
+                a_TargetV.Normalize();
+                GameObject a_NewObj = Instantiate(m_BulletPrefab);
+                Bullet_Ctrl a_BulletSc = a_NewObj.GetComponent<Bullet_Ctrl>();
+                a_BulletSc.BulletSpawn(m_ShootPos.transform.position, a_TargetV, BulletMySpeed);
 
+                // 총알이 날아가는 방향으로 회전시키기...
+                a_BulletSc.transform.right = new Vector3(-a_TargetV.x, -a_TargetV.y, 0.0f);
+
+                m_ShootCount++;
+                if(m_ShootCount < 7)
+                {
+                    shoot_Time = 0.7f;
+                }
+                else
+                {
+                    m_ShootCount = 0;
+                    shoot_Time = 2.0f;
+                    m_BossState = BossState.BS_FEVER_ATT;
+                }
+            }
         }// else if(m_BossState == BossState.BS_NORMAL_ATT) //일반 공격
         else if (m_BossState == BossState.BS_FEVER_ATT)  //피버 공격
         {
@@ -240,6 +265,10 @@ public class Monster_Ctrl : MonoBehaviour
             //--- 골드 보상 (임시 코드)
             Game_Mgr.Inst.SpawnCoin(transform.position);
             //--- 골드 보상 (임시 코드)
+
+            //--- 하트 보상
+            if (m_MonType == MonType.MT_Boss)
+                Game_Mgr.Inst.SpawnHeart(transform.position);
 
             //--- 사망한 몬스터가 보스면 다음번 스폰 주기 설정
             if (m_MonType == MonType.MT_Boss)

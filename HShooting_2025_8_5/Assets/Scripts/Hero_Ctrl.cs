@@ -126,6 +126,21 @@ public class Hero_Ctrl : MonoBehaviour
 
             Destroy(coll.gameObject);
         }
+        else if (coll.gameObject.name.Contains("HeartPrefab") == true)
+        {
+            m_CurHp += m_MaxHp * 0.5f;
+
+            Vector3 a_StCacPos = new Vector3(transform.position.x, transform.position.y + 1.14f, 0.0f);
+            Game_Mgr.Inst.DamageText(m_MaxHp * 0.5f, a_StCacPos, new Color(0.18f, 0.5f, 0.34f));
+            if (m_MaxHp < m_CurHp)
+            {
+                m_CurHp = m_MaxHp;
+            }
+            if (m_HpBar != null)
+                m_HpBar.fillAmount = m_CurHp / m_MaxHp;
+
+            Destroy(coll.gameObject);
+        }
 
     }//void OnTriggerEnter2D(Collider2D coll)
 
@@ -150,4 +165,21 @@ public class Hero_Ctrl : MonoBehaviour
         }
     }//void TakeDamage(float a_Value)
 
+    public void UseSkill(SkillType a_SkType)
+    {
+        if (m_CurHp <= 0.0f)
+            return;
+        if(a_SkType == SkillType.Skill_0)
+        {
+            m_CurHp += m_MaxHp * 0.2f;
+
+            Vector3 a_StCacPos = new Vector3(transform.position.x, transform.position.y + 1.14f, 0.0f);
+            Game_Mgr.Inst.DamageText(m_MaxHp * 0.2f, a_StCacPos, new Color(0.18f, 0.5f, 0.34f));
+
+            if (m_MaxHp < m_CurHp)
+                m_CurHp = m_MaxHp;
+            if (m_HpBar != null)
+                m_HpBar.fillAmount = m_CurHp / m_MaxHp;
+        }
+    }
 }//public class Hero_Ctrl : MonoBehaviour

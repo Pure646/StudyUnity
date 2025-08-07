@@ -1088,6 +1088,7 @@ MonoBehaviour:
   - {fileID: 1535131623585646629, guid: fd6625c976481b343b2fd187402f08ce, type: 3}
   - {fileID: 6324413214868644026, guid: f20f8adee889c994caa01ae5a18c0d3c, type: 3}
   - {fileID: 868859678823785808, guid: 3ddf7e328b316264cade4cc20c5504c4, type: 3}
+  m_SpBossTimer: 20
 --- !u!4 &1322317917
 Transform:
   m_ObjectHideFlags: 0

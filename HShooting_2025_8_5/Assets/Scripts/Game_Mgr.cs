@@ -29,6 +29,9 @@ public class Game_Mgr : MonoBehaviour
     GameObject m_CoinItem = null;
     //--- 코인 아이템 관련 변수
 
+    //--- 하트 아이템 관연 변수
+    GameObject m_HeartItem = null;
+
     //--- 싱글턴 패턴
     public static Game_Mgr Inst = null;
 
@@ -47,11 +50,18 @@ public class Game_Mgr : MonoBehaviour
 
         m_RefHero = GameObject.FindObjectOfType<Hero_Ctrl>();
         m_CoinItem = Resources.Load("CoinPrefab") as GameObject;
+        m_HeartItem = Resources.Load("HeartPrefab") as GameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // --- 단축키 이용으로 스킬 사용하기
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            UseSkill_Key(SkillType.Skill_0);
+        }
+
         if(Input.GetKeyDown(KeyCode.C) == true)
         {
             PlayerPrefs.DeleteAll();
@@ -140,6 +150,18 @@ public class Game_Mgr : MonoBehaviour
 
     }//public void SpawnCoin(Vector3 a_Pos, int a_Value = 10)
 
-
-
+    public void SpawnHeart(Vector3 a_Pos)
+    {
+        if (m_HeartItem == null)
+            return;
+        GameObject a_HeartObj = Instantiate(m_HeartItem);
+        a_Pos.z = 0.0f;
+        a_HeartObj.transform.position = a_Pos;
+    }
+    private void UseSkill_Key(SkillType a_SkType)
+    {
+        if (m_RefHero == null)
+            return;
+        m_RefHero.UseSkill(a_SkType);
+    }
 }

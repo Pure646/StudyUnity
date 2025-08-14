@@ -110,11 +110,39 @@ public class GlobalValue
     public static int g_BestScore = 0;          //최고 점수
     public static int g_UserGold = 0;           //보유 게임 머니
 
+    // 소환수 스킬 아이템 데이터 리스트
+    public static List<Skill_Info> g_SkDataList = new List<Skill_Info>();   // 스킬 아이템 설정
+    public static List<int> g_CurSkillCount = new List<int>();              // 스킬 아이템 보유 수
     public static void LoadGameData()
     {
+        // --- 설정 데이터 로딩
+        if(g_SkDataList.Count <= 0)
+        {
+            Skill_Info a_SkItemNd;
+            for(int i = 0; i < (int)SkillType.SkCount; i++)
+            {
+                a_SkItemNd = new Skill_Info();
+                a_SkItemNd.SetType((SkillType)i);
+                g_SkDataList.Add(a_SkItemNd);
+            }
+        }
+        // --- 설정 데이터 로딩
+
         g_NickName  = PlayerPrefs.GetString("NickName", "사냥꾼");
         g_BestScore = PlayerPrefs.GetInt("BestScore", 0);
         g_UserGold  = PlayerPrefs.GetInt("UserGold", 0);
+
+        //--- 서버나 로컬에 저장된 보유 상태 로딩
+        if(g_CurSkillCount.Count <= 0)
+        {
+            int a_SkCount = 0;
+            for(int i = 0; i < (int)SkillType.SkCount; i++)
+            {
+                a_SkCount = PlayerPrefs.GetInt($"Skill_Item_{i}", 1);
+                g_CurSkillCount.Add(a_SkCount);
+            }
+        }
+        //--- 서버나 로컬에 저장된 보유 상태 로딩
     }
 
 }//public class GlobalValue

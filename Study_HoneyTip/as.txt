@@ -1,0 +1,6 @@
+Rigidbody rb = obj as Rigidbody;
+
+👆 obj가 Rigidbody면 변환, 아니면 rb는 null!
+
+
+as는 객체를 원하는 타입으로 "안전하게 변환"할 때 쓰는 키워드야. 변환이 안 되면 null을 반환해.

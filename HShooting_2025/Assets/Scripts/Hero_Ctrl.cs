@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,6 +49,14 @@ public class Hero_Ctrl : MonoBehaviour
     [HideInInspector] public float m_Double_OnTime = 0.0f;
     float m_Double_Dur = 12.0f;
     //--- 더블샷 스킬
+
+    //--- SubHero
+    int Sub_Count = 3;
+    float m_Sub_OnTime = 0.0f;
+    float m_Sub_Dur = 12.0f;
+    public GameObject Sub_Parent = null;
+    public GameObject Sub_Hero_Prefab = null;
+
 
     // Start is called before the first frame update
     void Start()
@@ -230,6 +239,14 @@ public class Hero_Ctrl : MonoBehaviour
         }
         //--- 더블샷
 
+        // --- Sub Hero 업데이트
+        if(0.0f < m_Sub_OnTime)
+        {
+            m_Sub_OnTime -= Time.deltaTime;
+            if (m_Sub_OnTime < 0.0f)
+                m_Sub_OnTime = 0.0f;
+        }
+        
     }//void Update_Skill()
 
     public void UseSkill(SkillType a_SkType)
@@ -302,6 +319,29 @@ public class Hero_Ctrl : MonoBehaviour
 
             Game_Mgr.Inst.SkillCoolMethod(a_SkType, m_Double_OnTime, m_Double_Dur);
         }//else if(a_SkType == SkillType.Skill_4)  //더블샷
+        else if(a_SkType == SkillType.Skill_5)
+        {
+            if (0.0f < m_Sub_OnTime)
+                return;
+            Sub_Count = 3;
+            m_Sub_OnTime = m_Sub_Dur;
+
+            for(int i = 0; i < Sub_Count; i++)
+            {
+                GameObject obj = Instantiate(Sub_Hero_Prefab);
+                obj.transform.SetParent(Sub_Parent.transform);
+                SubHero_Ctrl sub = obj.GetComponent<SubHero_Ctrl>();
+                if (sub != null)
+                    sub.SubHeroSpawn((360 / Sub_Count) * i, m_Sub_OnTime);
+            }
+            Game_Mgr.Inst.SkillCoolMethod(a_SkType, m_Sub_OnTime, m_Sub_Dur);
+        }
+        GlobalValue.g_CurSkillCount[(int)a_SkType]--;           // 스킬 카운트 하나 소진
+
+        // --- 로컬에 저장하기
+        PlayerPrefs.SetInt($"Skill_Item_{(int)a_SkType}",
+            GlobalValue.g_CurSkillCount[(int)a_SkType]);
+        // --- 로컬에 저장하기
 
     }//public void UseSkill(SkillType a_SkType)
 

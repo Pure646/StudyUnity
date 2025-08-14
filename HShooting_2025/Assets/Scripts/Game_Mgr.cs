@@ -194,7 +194,13 @@ public class Game_Mgr : MonoBehaviour
 
     void UseSkill_Key(SkillType a_SkType)
     {
+        if (GlobalValue.g_CurSkillCount[(int)a_SkType] <= 0)
+            return;         // 보유하고 있는 스킬 소진으로 사용할 수 없음
+
         if (m_RefHero == null)
+            return;
+
+        if (Time.timeScale == 0.0f)      // 일시정지 상태일 때는 리턴
             return;
 
         m_RefHero.UseSkill(a_SkType);

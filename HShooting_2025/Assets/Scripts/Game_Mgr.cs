@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +38,14 @@ public class Game_Mgr : MonoBehaviour
     public Transform m_SkillCoolRoot = null;
     public GameObject m_SkCoolNode = null;
 
+    [Header("--- Inventory Show OnOff ---")]
+    public Button m_Inven_Btn = null;
+    public Transform m_InventoryRoot = null;
+    Transform m_ArrowIcon = null;
+    bool m_Inven_ScOnOff = true;
+    float m_ScSpeed = 1500.0f;
+    Vector3 m_ScOnPos = new Vector3(-170.0f, 0.0f, 0.0f);
+    Vector3 m_ScOffPos = new Vector3(-572.0f, 0.0f, 0.0f);
     //--- 싱글턴 패턴
     public static Game_Mgr Inst = null;
 
@@ -52,10 +61,20 @@ public class Game_Mgr : MonoBehaviour
         Time.timeScale = 1.0f;  //원래 속도로...
         GlobalValue.LoadGameData();
         ReflashUserInfo();
+        RefreshSkillList();
 
         m_RefHero = GameObject.FindObjectOfType<Hero_Ctrl>();
         m_CoinItem  = Resources.Load("CoinPrefab") as GameObject;
         m_HeartItem = Resources.Load("HeartPrefab") as GameObject;
+
+        if(m_Inven_Btn != null)
+        {
+            m_ArrowIcon = m_Inven_Btn.transform.Find("ArrowIcon");
+            m_Inven_Btn.onClick.AddListener(() =>
+            {
+                m_Inven_ScOnOff = !m_Inven_ScOnOff;
+            });
+        }
     }
 
     // Update is called once per frame
@@ -102,7 +121,10 @@ public class Game_Mgr : MonoBehaviour
             m_CurGold = 0;
             m_CurScoreText.text = "현재점수(" + m_CurScore + ")";
             ReflashUserInfo();
+            RefreshSkillList();
         }//if(Input.GetKeyDown(KeyCode.C) == true)
+
+        ScrollOnOff_Update();
     }//void Update()
 
     public void AddScore(int a_Value = 10)
@@ -204,6 +226,19 @@ public class Game_Mgr : MonoBehaviour
             return;
 
         m_RefHero.UseSkill(a_SkType);
+
+        if (m_InventoryRoot == null)
+            return;
+
+        SkInvenCell[] a_SkIvnNodes = m_InventoryRoot.GetComponentsInChildren<SkInvenCell>();
+        for (int i = 0; i < a_SkIvnNodes.Length; i++)
+        {
+            if (a_SkIvnNodes[i].m_SkType == a_SkType)
+            {
+                a_SkIvnNodes[i].Refresh_UI(a_SkType);
+                break;
+            }
+        }
     }
 
     public void SkillCoolMethod(SkillType a_SkType, float a_Time, float a_During)
@@ -216,5 +251,48 @@ public class Game_Mgr : MonoBehaviour
         if (a_SCtrl != null)
             a_SCtrl.InitState(a_SkType, a_Time, a_During);
     }
-
+    private void ScrollOnOff_Update()
+    {
+        if (m_InventoryRoot == null)
+            return;
+        if(Input.GetKeyDown(KeyCode.R) == true)
+        {
+            m_Inven_ScOnOff = !m_Inven_ScOnOff;
+        }
+        if(m_Inven_ScOnOff == false)
+        {
+            if(m_InventoryRoot.localPosition.x > m_ScOffPos.x)
+            {
+                m_InventoryRoot.localPosition =
+                    Vector3.MoveTowards(m_InventoryRoot.localPosition, m_ScOffPos, 
+                    m_ScSpeed * Time.deltaTime);
+                if(m_ScOffPos.x + 0.5f >= m_InventoryRoot.localPosition.x)
+                {
+                    m_ArrowIcon.transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
+                }
+            }
+        }
+        else
+        {
+            if(m_ScOnPos.x > m_InventoryRoot.localPosition.x)
+            {
+                m_InventoryRoot.localPosition = Vector3.MoveTowards(m_InventoryRoot.localPosition,
+                    m_ScOnPos, m_ScSpeed * Time.deltaTime);
+                if(m_InventoryRoot.localPosition.x >= m_ScOnPos.x - 0.5f)
+                {
+                    m_ArrowIcon.transform.eulerAngles = new Vector3(0.0f, 0.0f, 180.0f);
+                }
+            }
+        }
+    }
+    private void RefreshSkillList()
+    {
+        SkInvenCell[] a_SkIvnNodes = m_InventoryRoot.GetComponentsInChildren<SkInvenCell>();
+        for (int i= 0; i< a_SkIvnNodes.Length; i++)
+        {
+            if (GlobalValue.g_CurSkillCount.Count <= i)
+                continue;
+            a_SkIvnNodes[i].InitState((SkillType)i);
+        }
+    }
 }//public class Game_Mgr : MonoBehaviour

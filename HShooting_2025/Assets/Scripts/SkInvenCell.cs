@@ -11,6 +11,23 @@ public class SkInvenCell : MonoBehaviour
     public Text m_SkCountText;          // 스킬 카운트 텍스트
     public Image m_SkIconImg;           // 캐릭터 아이콘 이미지
 
+    private void Start()
+    {
+        Button a_BtnCom = this.GetComponent<Button>();
+        if (a_BtnCom != null)
+            a_BtnCom.onClick.AddListener(() =>
+            {   // 이 버튼을 눌렀을 떄
+
+                if (GlobalValue.g_CurSkillCount[(int)m_SkType] <= 0)
+                    return;     // 스킬 소진으로 사용할 수 없음
+
+                Hero_Ctrl a_Hero = GameObject.FindObjectOfType<Hero_Ctrl>();
+                if (a_Hero != null)
+                    a_Hero.UseSkill(m_SkType);
+
+                Refresh_UI(m_SkType);
+            });
+    }
     public void InitState(SkillType a_SkType)
     {
         m_SkType = a_SkType;

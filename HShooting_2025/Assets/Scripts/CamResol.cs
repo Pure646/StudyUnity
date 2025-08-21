@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CamResol : MonoBehaviour
 {
-    public GameObject UI_MaskGroup = null;
+    public GameObject UI_MaskGroup = null;  // 화면 제어
+
 
     //뷰포트의 월드좌표 VpW : Viewport To World
     public static Vector3 m_VpWMin = new Vector3(-10.0f, -5.0f, 0.0f);

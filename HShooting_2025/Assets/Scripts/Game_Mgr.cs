@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Game_Mgr : MonoBehaviour
@@ -63,6 +64,11 @@ public class Game_Mgr : MonoBehaviour
         ReflashUserInfo();
         RefreshSkillList();
 
+        if (Back_Btn != null)
+            Back_Btn.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene("LobbyScene");
+            });
         m_RefHero = GameObject.FindObjectOfType<Hero_Ctrl>();
         m_CoinItem  = Resources.Load("CoinPrefab") as GameObject;
         m_HeartItem = Resources.Load("HeartPrefab") as GameObject;

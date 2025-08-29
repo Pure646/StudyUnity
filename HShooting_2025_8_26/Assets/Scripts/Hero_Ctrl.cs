@@ -57,6 +57,11 @@ public class Hero_Ctrl : MonoBehaviour
     public GameObject Sub_Hero_Prefab = null;
     //--- Sub Hero
 
+    // --- Joystick 이동 처리 변수
+    private float m_JoyMvLen = 0.0f;
+    private Vector3 m_JoyMvDir = Vector3.zero;
+    // --- Joystick 이동 처리 변수
+
     // Start is called before the first frame update
     void Start()
     {
@@ -87,6 +92,8 @@ public class Hero_Ctrl : MonoBehaviour
             transform.position += moveDir * moveSpeed * Time.deltaTime;
 
         }//if(h != 0.0f || v != 0.0f)
+
+        JoystickMvUpdate();
 
         LimitMove();
 
@@ -348,5 +355,23 @@ public class Hero_Ctrl : MonoBehaviour
         //--- 로컬에 저장하기
 
     }//public void UseSkill(SkillType a_SkType)
+
+    public void SetJoyStickMv(Vector2 joyMvDir)
+    {
+        m_JoyMvLen = joyMvDir.magnitude;
+        if(0.0f < m_JoyMvLen)
+        {
+            m_JoyMvDir = new Vector3(joyMvDir.x, joyMvDir.y, 0.0f);
+        }
+    }
+    private void JoystickMvUpdate()
+    {
+        if (h != 0.0f || v != 0.0f)
+            return;
+        if(0.0f < m_JoyMvLen)
+        {
+            transform.Translate(m_JoyMvDir * moveSpeed * Time.deltaTime);
+        }
+    }
 
 }//public class Hero_Ctrl : MonoBehaviour

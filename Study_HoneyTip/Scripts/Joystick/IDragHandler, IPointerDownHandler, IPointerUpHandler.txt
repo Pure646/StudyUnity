@@ -1,0 +1,12 @@
+[ Interface ]
+
+IPointerDownHandler
+//Js_Background 이미지를 마우스로 클릭하는 순간 발생되는 이벤트 함수
+
+
+IDragHandler
+//Js_Background 이미지를 마우스를 드래그하는 동안 발생되는 이벤트 함수
+
+
+IPointerUpHandler
+//Js_Background 이미지를 마우스로 클릭 때는 순간 발생되는 이벤트 함수

@@ -10,7 +10,7 @@ public class G_Singleton<T> : MonoBehaviour where T : G_Singleton<T> //Scene 이
 	private static object _syncobj = new object();
 	private static bool appIsClosing = false;
 
-	public static T Instance
+	public static T Inst
 	{
 		get
 		{

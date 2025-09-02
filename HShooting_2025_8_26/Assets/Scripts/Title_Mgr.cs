@@ -15,6 +15,7 @@ public class Title_Mgr : MonoBehaviour
     void Start()
     {
         StartBtn.onClick.AddListener(StartClick);
+        Sound_Mgr.Inst.m_AudioSrc.clip = null;          // 배경음 플레이 끄기
     }
 
     // Update is called once per frame
@@ -27,5 +28,7 @@ public class Title_Mgr : MonoBehaviour
     {
         //Debug.Log("게임 시작 버튼 클릭");
         SceneManager.LoadScene("LobbyScene");
+
+        Sound_Mgr.Inst.PlayGUISound("Pop", 1.0f);
     }
 }

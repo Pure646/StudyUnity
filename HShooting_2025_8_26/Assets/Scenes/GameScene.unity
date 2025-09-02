@@ -1324,7 +1324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 774937b5bf0751847b2b16a9abedbf86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JoyStickType: 1
+  m_JoyStickType: 2
   m_JoystickPickPanel: {fileID: 1544868645}
   m_Js_Background: {fileID: 2094639411}
   m_Js_Handle: {fileID: 1019012072}
@@ -3139,7 +3139,7 @@ GameObject:
   - component: {fileID: 1544868650}
   - component: {fileID: 1544868649}
   - component: {fileID: 1544868648}
-  - component: {fileID: 1544868647}
+  - component: {fileID: 1544868651}
   m_Layer: 5
   m_Name: JoystickPickPanel
   m_TagString: Untagged
@@ -3166,20 +3166,6 @@ RectTransform:
   m_AnchoredPosition: {x: -395, y: 20}
   m_SizeDelta: {x: 480, y: 420}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1544868647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544868645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71b8cc0febcdf324a91c94aae7ee548f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Js_Background: {fileID: 2094639412}
-  m_Js_Handle: {fileID: 1019012073}
 --- !u!114 &1544868648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3231,6 +3217,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1544868645}
   m_CullTransparentMesh: 1
+--- !u!114 &1544868651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544868645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b413e6933f1814648a7ebb9ad08193fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Js_Background: {fileID: 2094639412}
+  m_Js_Handle: {fileID: 1019012073}
 --- !u!1 &1552006826
 GameObject:
   m_ObjectHideFlags: 0
@@ -4329,7 +4329,7 @@ GameObject:
   - component: {fileID: 2094639412}
   - component: {fileID: 2094639415}
   - component: {fileID: 2094639414}
-  - component: {fileID: 2094639413}
+  - component: {fileID: 2094639416}
   m_Layer: 5
   m_Name: Js_Background
   m_TagString: Untagged
@@ -4357,18 +4357,6 @@ RectTransform:
   m_AnchoredPosition: {x: -435, y: 10}
   m_SizeDelta: {x: 170, y: 170}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2094639413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2094639411}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b413e6933f1814648a7ebb9ad08193fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2094639414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4407,6 +4395,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094639411}
   m_CullTransparentMesh: 1
+--- !u!114 &2094639416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094639411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b8cc0febcdf324a91c94aae7ee548f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Js_Background: {fileID: 2094639412}
+  m_Js_Handle: {fileID: 1019012073}
 --- !u!1 &2126359199
 GameObject:
   m_ObjectHideFlags: 0

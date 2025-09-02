@@ -84,6 +84,8 @@ public class Game_Mgr : MonoBehaviour
             });
         }//if(m_Inven_Btn != null)
 
+        Sound_Mgr.Inst.PlayBGM("sound_bgm_island_001", 0.5f);
+
     }//void Start()
 
     // Update is called once per frame

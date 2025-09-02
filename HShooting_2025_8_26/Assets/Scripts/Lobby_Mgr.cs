@@ -33,6 +33,8 @@ public class Lobby_Mgr : MonoBehaviour
             GameStart_Btn.onClick.AddListener(() =>
             {
                 SceneManager.LoadScene("GameScene");
+
+                Sound_Mgr.Inst.PlayGUISound("Pop", 1.0f);
             });
 
         if (m_GoldText != null)
@@ -41,6 +43,8 @@ public class Lobby_Mgr : MonoBehaviour
         if (m_UserInfoText != null)
             m_UserInfoText.text = "내정보 : 별명(" + GlobalValue.g_NickName +
                                   ") : 점수(" + GlobalValue.g_BestScore + ")";
+
+        Sound_Mgr.Inst.PlayBGM("sound_bgm_title_001", 0.8f);
 
     }//void Start()
 
@@ -54,16 +58,22 @@ public class Lobby_Mgr : MonoBehaviour
     {
         //Debug.Log("상점씬으로 이동");
         SceneManager.LoadScene("StoreScene");
+
+        Sound_Mgr.Inst.PlayGUISound("Pop", 1.0f);
     }
 
     void MyRoomBtnClick()
     {
         //Debug.Log("꾸미기씬으로 이동");
         SceneManager.LoadScene("MyRoomScene");
+
+        Sound_Mgr.Inst.PlayGUISound("Pop", 1.0f);
     }
 
     void ExitBtnClick()
     {
         SceneManager.LoadScene("TitleScene");
+
+        Sound_Mgr.Inst.PlayGUISound("Pop", 1.0f);
     }
 }

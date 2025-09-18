@@ -13,6 +13,8 @@ public class MonsterCtrl : MonoBehaviour
     private Transform monsterTr;
     private Transform playerTr;
     private NavMeshAgent nvAgent;
+    private Animator animator;
+    
 
     // 추적 사정거리
     public float traceDist = 10.0f;
@@ -20,6 +22,12 @@ public class MonsterCtrl : MonoBehaviour
     public float attackDist = 1.7f;
     // 죽음 처리
     private bool isDie = false;
+
+    // 혈흔 효과 프리팹
+    public GameObject bloodEffect;
+
+    // 혈흔 데칼 효과 프리팹
+    public GameObject bloodDecal;
     void Start()
     {
         //몬스터의 Transform 할당
@@ -28,7 +36,9 @@ public class MonsterCtrl : MonoBehaviour
         playerTr = GameObject.FindWithTag("Player").GetComponent<Transform>();
         //NavmeshAgent 컴포넌트 할당
         nvAgent = this.gameObject.GetComponent<NavMeshAgent>();
-
+        // Animator 컴포넌트
+        animator = this.gameObject.GetComponent<Animator>();
+        
         // 추적 대상의 위치를 설정하면 바로 추적 시작
         //nvAgent.destination = playerTr.position;
 
@@ -74,15 +84,60 @@ public class MonsterCtrl : MonoBehaviour
             {
                 case MonsterState.idle:
                     nvAgent.isStopped = true;
+                    animator.SetBool("IsTrace", false);
                     break;
                 case MonsterState.trace:
                     nvAgent.destination = playerTr.position;
                     nvAgent.isStopped = false;
+                    animator.SetBool("IsTrace", true);
+                    animator.SetBool("IsAttack", false);
                     break;
                 case MonsterState.attack:
+                    nvAgent.isStopped = true;
+                    animator.SetBool("IsAttack", true);
+
+                    float a_RotSpeed = 6.0f;
+                    Vector3 a_CacDir = playerTr.position - transform.position;
+                    a_CacDir.y = 0.0f;
+                    if (0.0f < a_CacDir.magnitude)
+                    {
+                        Quaternion a_TargetRot = Quaternion.LookRotation(a_CacDir.normalized);
+                        transform.rotation = Quaternion.Slerp(transform.rotation, a_TargetRot, Time.deltaTime * a_RotSpeed);
+                    }
                     break;
             }
             yield return null;      //<-- 한 플레임이 도는 동안 잠시 대기
         }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "BULLET")
+        {
+            CreateBloodEffect(collision.transform.position);
+
+            Destroy(collision.gameObject);
+
+            animator.SetTrigger("IsHit");
+        }
+    }
+
+    private void CreateBloodEffect(Vector3 pos)
+    {
+        GameObject blood1 = (GameObject)Instantiate(bloodEffect, pos, Quaternion.identity);
+        blood1.GetComponent<ParticleSystem>().Play();
+        Destroy(blood1, 3.0f);
+
+        // 데칼 생성 위치
+        Vector3 decalPos = monsterTr.position + (Vector3.up * 0.05f);
+        // 데칼의 회전값을 무작위로 설정
+        Quaternion decalRot = Quaternion.Euler(90, 0, Random.Range(0, 360));
+
+        // 데칼 프리팹 생성
+        GameObject blood2 = (GameObject)Instantiate(bloodDecal, decalPos, decalRot);
+        // 데칼의 크기도 불규칙적으로 나타나게끔 스케일 조정
+        float scale = Random.Range(1.5f, 3.5f);
+        blood2.transform.localScale = Vector3.one * scale;
+
+        Destroy(blood2, 5.0f);
     }
 }

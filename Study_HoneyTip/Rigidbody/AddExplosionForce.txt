@@ -1,0 +1,20 @@
+Rigidbody.AddExplosionForce(float explosionForce, Vector3 explosionPosition, float explosionRadius);
+
+
+매개변수
+
+explosionForce
+폭발의 세기. (값이 클수록 더 강하게 밀려남)
+
+explosionPosition
+폭발이 일어나는 중심 좌표 (월드 좌표계 기준).
+
+explosionRadius
+폭발이 영향을 미치는 반경.
+
+optional – upwardsModifier (기본값 0.0f)
+위로 튕겨 올리는 힘을 보정해주는 값.
+예: 1.0f 로 하면 폭발 시 위로도 튀어오르는 느낌을 줄 수 있음.
+
+optional – ForceMode (기본값 ForceMode.Force)
+힘이 가해지는 방식. (Impulse, Acceleration, VelocityChange 등 지정 가능)

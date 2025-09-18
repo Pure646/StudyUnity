@@ -10,6 +10,10 @@ public class BulletCtrl : MonoBehaviour
 
     private void Start()
     {
+        speed = 3000.0f;
+
         GetComponent<Rigidbody>().AddForce(transform.forward * speed);
+
+        Destroy(gameObject, 4.0f);
     }
 }

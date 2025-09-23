@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.AI;
 public class MonsterCtrl : MonoBehaviour
@@ -14,7 +15,7 @@ public class MonsterCtrl : MonoBehaviour
     private Transform playerTr;
     private NavMeshAgent nvAgent;
     private Animator animator;
-    
+
 
     // 추적 사정거리
     public float traceDist = 10.0f;
@@ -28,8 +29,13 @@ public class MonsterCtrl : MonoBehaviour
 
     // 혈흔 데칼 효과 프리팹
     public GameObject bloodDecal;
+
+    // 몬스터 체력
+    private int hp = 100;
     void Start()
     {
+        attackDist = 1.5f;
+
         //몬스터의 Transform 할당
         monsterTr = this.gameObject.GetComponent<Transform>();
         //추적 대상인 Player의 Transform 할당
@@ -38,7 +44,7 @@ public class MonsterCtrl : MonoBehaviour
         nvAgent = this.gameObject.GetComponent<NavMeshAgent>();
         // Animator 컴포넌트
         animator = this.gameObject.GetComponent<Animator>();
-        
+
         // 추적 대상의 위치를 설정하면 바로 추적 시작
         //nvAgent.destination = playerTr.position;
 
@@ -52,17 +58,17 @@ public class MonsterCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     IEnumerator CheckMonsterState()
     {
-        while(!isDie)
+        while (!isDie)
         {
             yield return new WaitForSeconds(0.2f);
 
             float dist = Vector3.Distance(playerTr.position, monsterTr.position);
 
-            if(dist <= attackDist)      // 공격거리 범위 이내로 들어왔는지 확인
+            if (dist <= attackDist)      // 공격거리 범위 이내로 들어왔는지 확인
             {
                 monsterState = MonsterState.attack;
             }
@@ -72,15 +78,15 @@ public class MonsterCtrl : MonoBehaviour
             }
             else
             {
-                monsterState = MonsterState.idle;       
+                monsterState = MonsterState.idle;
             }
         }
     }
     IEnumerator MonsterAction()
     {
-        while(!isDie)
+        while (!isDie)
         {
-            switch(monsterState)
+            switch (monsterState)
             {
                 case MonsterState.idle:
                     nvAgent.isStopped = true;
@@ -111,13 +117,37 @@ public class MonsterCtrl : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "BULLET")
+        if (collision.gameObject.tag == "BULLET")
         {
             CreateBloodEffect(collision.transform.position);
+
+            // 맞은 총알의 Damage를 추출해 몬스터 hp 차감
+            hp -= collision.gameObject.GetComponent<BulletCtrl>().damage;
+            if (hp <= 0)
+            {
+                MonsterDie();
+            }
 
             Destroy(collision.gameObject);
 
             animator.SetTrigger("IsHit");
+        }
+    }
+    private void MonsterDie()
+    {
+        // 모든 코루팅 정지
+        StopAllCoroutines();
+
+        isDie = true;
+        monsterState = MonsterState.die;
+        nvAgent.isStopped = true;
+        animator.SetTrigger("IsDie");
+
+        gameObject.GetComponentInChildren<CapsuleCollider>().enabled = false;
+
+        foreach (Collider coll in gameObject.GetComponentsInChildren<SphereCollider>())
+        {
+            coll.enabled = false;
         }
     }
 
@@ -139,5 +169,18 @@ public class MonsterCtrl : MonoBehaviour
         blood2.transform.localScale = Vector3.one * scale;
 
         Destroy(blood2, 5.0f);
+    }
+    private void OnPlayerDie()
+    {
+        // 몬스터의 상태를 체크하는 코루틴 함수를 모두 정지시킴
+        StopAllCoroutines();
+        // 추적을 정지하고 애니메이션을 수행
+        nvAgent.isStopped = true;
+
+        animator.SetTrigger("IsPlayerDie");
+        //if (isDie == false)
+        //{
+
+        //}
     }
 }

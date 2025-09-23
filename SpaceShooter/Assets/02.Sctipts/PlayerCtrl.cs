@@ -24,6 +24,9 @@ public class PlayerCtrl : MonoBehaviour
     // 아래에 있는 3D 모델의 Animation 컴포넌트에 접근하기 위한 변수
     public Animation _animation;
 
+    //Player의 생명 변수
+    public int hp = 100;
+
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -37,6 +40,9 @@ public class PlayerCtrl : MonoBehaviour
     }
     private void Update()
     {
+        if (GameMgr.s_GameState == GameState.GameEnd)
+            return;
+
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
@@ -78,4 +84,38 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (hp <= 0.0f)
+        {
+            return;
+        }
+        hp -= 10;
+
+        Debug.Log("Player Hp = " + hp.ToString());
+
+        if (hp <= 0)
+        {
+            PlayerDie();
+        }
+    }
+
+    private void PlayerDie()
+    {
+        Debug.Log("Player Die!!");
+
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("MONSTER");
+
+        foreach (GameObject monster in monsters)
+        {
+            // 유지보수가 어려워서 잘 안쓰긴 한다. & 모든 함수를 찾느라 많이 메모리가 많이 사용된다.
+            // 있으면 호출 없으면 말고.
+            monster.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
+            //monster.GetComponent<MonsterCtrl>().OnPlayerDie();
+        }
+
+        _animation.Stop();      // 애니메이션 컴포넌트의 애니메이션 중지 함수
+        GameMgr.s_GameState = GameState.GameEnd;
+        
+    }
 }

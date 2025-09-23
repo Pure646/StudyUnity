@@ -26,6 +26,9 @@ public class FireCtrl : MonoBehaviour
     }
     private void Update()
     {
+        if (GameMgr.s_GameState == GameState.GameEnd)
+            return;
+
         if (0.0f < fireTimer)
             fireTimer -= Time.deltaTime;
         if(Input.GetMouseButton(0))

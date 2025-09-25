@@ -35,8 +35,11 @@ public class FireCtrl : MonoBehaviour
         {
             if(fireTimer <= 0.0f)
             {
-                Fire();
-                fireTimer = fireCool;
+                if(GameMgr.Inst.IsPointerOverUIObject() == false)
+                {
+                    Fire();
+                    fireTimer = fireCool;
+                }
             }
         }
     }

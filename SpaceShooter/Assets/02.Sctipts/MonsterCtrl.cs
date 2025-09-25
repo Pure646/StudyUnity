@@ -149,6 +149,9 @@ public class MonsterCtrl : MonoBehaviour
         {
             coll.enabled = false;
         }
+
+        //GameMgr의 스코어 누적과 스코어 표시 함수 호출
+        GameMgr.Inst.DispScore(50);
     }
 
     private void CreateBloodEffect(Vector3 pos)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Anim
@@ -27,6 +28,11 @@ public class PlayerCtrl : MonoBehaviour
     //Player의 생명 변수
     public int hp = 100;
 
+    // Player의 생명 초깃값
+    public int initHp;
+    // Player의 Health bar 이미지
+    public Image imgHpbar;
+
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -37,6 +43,9 @@ public class PlayerCtrl : MonoBehaviour
         // Animation 컴포넌트의 애니메이션 클립을 지정하고 실행
         _animation.clip = anim.idle;
         _animation.Play();
+
+        // 생명 초깃값 설정
+        initHp = hp;
     }
     private void Update()
     {
@@ -92,7 +101,9 @@ public class PlayerCtrl : MonoBehaviour
         }
         hp -= 10;
 
-        Debug.Log("Player Hp = " + hp.ToString());
+        imgHpbar.fillAmount = (float)hp / (float)initHp;
+
+        //Debug.Log("Player Hp = " + hp.ToString());
 
         if (hp <= 0)
         {

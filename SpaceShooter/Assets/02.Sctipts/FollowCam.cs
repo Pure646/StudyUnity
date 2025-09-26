@@ -10,6 +10,7 @@ public class FollowCam : MonoBehaviour
     public float dampTrace = 20.0f;     // 부드러운 추적을 위한 변수
 
     private Vector3 m_PlayerVec = Vector3.zero;
+    private float rotSpeed = 10.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +31,17 @@ public class FollowCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (GameMgr.s_GameState == GameState.GameEnd)
+            return;
+        if (Input.GetMouseButton(0) == true || Input.GetMouseButton(1) == true)
+        {
+            height -= (rotSpeed * Time.deltaTime * Input.GetAxis("Mouse Y"));
+
+            if (height < 0.1f)
+                height = 0.1f;
+
+            if (5.7f < height)
+                height = 5.7f;
+        }
     }
 }

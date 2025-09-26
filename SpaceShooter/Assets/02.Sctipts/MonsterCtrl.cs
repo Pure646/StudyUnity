@@ -32,8 +32,9 @@ public class MonsterCtrl : MonoBehaviour
 
     // 몬스터 체력
     private int hp = 100;
-    void Start()
+    void Awake()
     {
+        traceDist = 100.0f;
         attackDist = 1.5f;
 
         //몬스터의 Transform 할당
@@ -47,7 +48,9 @@ public class MonsterCtrl : MonoBehaviour
 
         // 추적 대상의 위치를 설정하면 바로 추적 시작
         //nvAgent.destination = playerTr.position;
-
+    }
+    private void Start()
+    {
         // 일정한 간격으로 몬스터의 행동 상태를 체크하는 코루틴 함수 실행
         StartCoroutine(this.CheckMonsterState());
 
@@ -59,6 +62,24 @@ public class MonsterCtrl : MonoBehaviour
     void Update()
     {
 
+    }
+    IEnumerator PushObjectPool()
+    {
+        yield return new WaitForSeconds(3.0f);
+
+        isDie = false;
+        hp = 100;
+        gameObject.tag = "MONSTER";
+        monsterState = MonsterState.idle;
+
+        gameObject.GetComponentInChildren<CapsuleCollider>().enabled = true;
+
+        foreach(Collider coll in gameObject.GetComponentsInChildren<SphereCollider>())
+        {
+            coll.enabled = true;
+        }
+
+        gameObject.SetActive(false);
     }
     IEnumerator CheckMonsterState()
     {
@@ -135,6 +156,9 @@ public class MonsterCtrl : MonoBehaviour
     }
     private void MonsterDie()
     {
+        // 사망한 몬스터의 태그를 Untagged 로 변경
+        gameObject.tag = "Untagged";
+
         // 모든 코루팅 정지
         StopAllCoroutines();
 
@@ -152,6 +176,8 @@ public class MonsterCtrl : MonoBehaviour
 
         //GameMgr의 스코어 누적과 스코어 표시 함수 호출
         GameMgr.Inst.DispScore(50);
+
+        StartCoroutine(this.PushObjectPool());
     }
 
     private void CreateBloodEffect(Vector3 pos)
